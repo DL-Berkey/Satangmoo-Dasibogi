@@ -3,15 +3,18 @@ import styled from "styled-components";
 import logoimg from "/logoImg.jpg";
 import { gray, mainRed } from "@/styles/colors";
 import { logo } from "@/styles/fontSize";
+import Calendar from "./Calendar";
 
 const Layout = () => {
     return (
         <>
             <Header>
                 <img src={logoimg} alt="logo_image" />
-                <span>사탕무 다시보기</span>
+                <h1>사탕무 다시보기</h1>
             </Header>
-            <Main />
+            <Main>
+                <Calendar />
+            </Main>
         </>
     );
 };
@@ -26,7 +29,6 @@ const Header = styled.header`
     margin-bottom: 1%;
     padding: 0 2%;
 
-    font-size: ${logo};
     font-weight: bold;
     color: ${mainRed};
 
@@ -38,12 +40,16 @@ const Header = styled.header`
 
         object-fit: contain;
     }
+
+    h1 {
+        font-size: ${logo};
+    }
 `;
 
 const Main = styled.main`
     height: 90%;
 
-    padding: 0 3%;
+    padding: 0 10%;
 `;
 
 export default Layout;

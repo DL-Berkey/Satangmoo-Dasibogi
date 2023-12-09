@@ -20,6 +20,15 @@ const GlobalStyle = createGlobalStyle`
         font-family: Pretendard-Regular;
     }
 
+    button {
+        background: none;
+        border: 0;
+
+        &:hover {
+            cursor: pointer;
+        }
+    }
+
     // 기본이 될 화면 사이즈
     #root {
         width: 100vw;
