@@ -44,6 +44,15 @@ const Header = styled.header`
     h1 {
         font-size: ${logo};
     }
+
+    @media (max-width: 1250px) {
+        & img {
+            width: 10%;
+            height: 100%;
+
+            margin-right: 2%;
+        }
+    }
 `;
 
 const Main = styled.main`
