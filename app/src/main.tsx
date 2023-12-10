@@ -1,14 +1,24 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import App from "./App.tsx";
-import { QueryClient, QueryClientProvider } from "react-query";
+import {
+    QueryCache,
+    QueryClient,
+    QueryClientProvider,
+} from "@tanstack/react-query";
 
 // devtools
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 
 import GlobalStyle from "./styles/GlobalStyle";
 
-const client = new QueryClient();
+const client = new QueryClient({
+    queryCache: new QueryCache({
+        onError: (error) => {
+            console.error(error);
+        },
+    }),
+});
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
     <React.StrictMode>

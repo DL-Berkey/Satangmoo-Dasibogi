@@ -12,6 +12,7 @@ const DayOfWeekCardContainer = ({ dayOfWeekMap }: Props) => {
             {Object.entries(dayOfWeekMap).map(([key, value]) => {
                 return (
                     <DayOfWeekCard
+                        key={key}
                         $isholiday={key === "sunday" || key === "saturday"}
                     >
                         {value}
@@ -30,6 +31,9 @@ const Wrapper = styled.div`
 
     height: 5%;
 
+    @media (max-width: 1250px) {
+        display: none;
+    }
 `;
 
 const DayOfWeekCard = styled.div<{
