@@ -1,4 +1,4 @@
-import { VideoData } from "../../types/youtubeResponse";
+import { VideoData } from "../types/youtubeResponse";
 import supabase from "./client";
 import dayjs from "dayjs";
 

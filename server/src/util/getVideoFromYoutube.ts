@@ -1,7 +1,7 @@
 import axios from "axios";
 import dayjs from "dayjs";
 
-import { YoutubeResponse } from "../../types/youtubeResponse";
+import { YoutubeResponse } from "../types/youtubeResponse";
 
 const getVideoFromYoutube = (startingDate: string, endDate: string) =>
     axios.get<YoutubeResponse>("https://www.googleapis.com/youtube/v3/search", {
