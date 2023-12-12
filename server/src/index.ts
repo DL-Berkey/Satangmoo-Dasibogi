@@ -1,5 +1,6 @@
 import express, { Request, Response } from "express";
 import dotenv from "dotenv";
+import dayjs from "dayjs";
 import getVideoFromYoutube from "./util/getVideoFromYoutube";
 import { createVideo } from "./supabaseConfig/service";
 
@@ -24,19 +25,45 @@ app.post("/update/period", async (req: Request, res: Response) => {
             return;
         }
 
-        const video = await getVideoFromYoutube(startingDate, endDate);
+        // 시작하는 날과 끝나는 날이 서로 다를 경우 그 사이의 모든 달을 구하는 로직
+        const periodArray = [];
+
+        let currentDate = dayjs(startingDate);
+
+        while (!currentDate.isSame(endDate, "month")) {
+            periodArray.push({
+                startingDate: currentDate.format("YYYY-MM-DD"),
+                endDate: currentDate.endOf("month").format("YYYY-MM-DD"),
+            });
+
+            currentDate = currentDate.add(1, "month");
+        }
+        periodArray.push({
+            startingDate: currentDate.format("YYYY-MM-DD"),
+            endDate,
+        });
+
+        const videoArray = await Promise.all(
+            periodArray.map(async ({ startingDate, endDate }) => {
+                const result = await getVideoFromYoutube(startingDate, endDate);
+
+                return result.data.items;
+            })
+        );
 
         const result = await Promise.all(
-            video.data.items.map(async (value) => {
-                const { videoId } = value.id;
-                const { thumbnails, publishedAt, title } = value.snippet;
+            videoArray.flat().map(async (video) => {
+                const { videoId } = video.id;
+                const { thumbnails, publishedAt, title } = video.snippet;
 
-                return await createVideo(
+                const result = await createVideo(
                     videoId,
                     thumbnails,
                     publishedAt,
                     title
                 );
+
+                return result;
             })
         );
 
