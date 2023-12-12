@@ -1,61 +1,56 @@
 import { useSuspenseQuery } from "@tanstack/react-query";
-import axios from "axios";
+import supabase from "@/supabaseConfig/client";
 
-import dayjs from "dayjs";
+const getVideoMap = async (startingDate: string, endDate: string) => {
+    const { data, error } = await supabase
+        .from("video")
+        .select()
+        .gte("publishedAt", startingDate)
+        .lte("publishedAt", endDate);
 
-// YouTube API Key
-const API_KEY = import.meta.env.VITE_API_KEY;
-const CHANNEL_ID = import.meta.env.VITE_CHANNEL_ID;
+    if (error) {
+        return null;
+    }
 
-const getVideos = async (startingDate: string, endDate: string) =>
-    await axios.get<YoutubeResponse>(
-        "https://www.googleapis.com/youtube/v3/search",
-        {
-            params: {
-                key: API_KEY,
-                channelId: CHANNEL_ID,
-                part: "snippet",
-                order: "date",
-                maxResults: 31,
-                publishedAfter: dayjs(startingDate)
-                    .add(9, "hour")
-                    .toISOString(),
-                publishedBefore: dayjs(endDate)
-                    .add(9, "hour")
-                    .add(1, "day")
-                    .toISOString(),
-            },
-        }
-    );
+    const result = new Map<string, VideoData>();
 
-const useVideo = (startingDate: string, endDate: string) => {
+    data.forEach((value) => {
+        const thumbnails: VideoData["thumbnails"] = JSON.parse(
+            value.thumbnails
+        );
+
+        result.set(value.publishedAt, {
+            ...value,
+            thumbnails: thumbnails,
+        });
+    });
+
+    return result;
+};
+
+export const useFetchingVideo = (monthPeriod: Period) => {
     const query = useSuspenseQuery({
-        queryKey: ["video", startingDate, endDate],
-        queryFn: () => getVideos(startingDate, endDate),
-        select: (data) => {
-            const videoData: Record<
-                string,
-                { snippet: Snippet; videoId: string }
-            > = {};
-
-            data.data.items.forEach((value) => {
-                const publishedAt = dayjs(value.snippet.publishedAt)
-                    .subtract(9, "hour")
-                    .format("YYYY-MM-D");
-
-                videoData[publishedAt] = {
-                    snippet: value.snippet,
-                    videoId: value.id.videoId,
-                };
-            });
-
-            return videoData;
-        },
+        queryKey: ["video", monthPeriod.yearAndMonth],
+        queryFn: () =>
+            getVideoMap(monthPeriod.startingDate, monthPeriod.endDate),
         staleTime: Infinity,
         gcTime: Infinity,
     });
 
     return query;
 };
+export const useFetchingAllVideo = ({
+    currentMonthPeriod,
+    prevMonthPeriod,
+    nextMonthPeriod,
+}: {
+    currentMonthPeriod: Period;
+    prevMonthPeriod: Period;
+    nextMonthPeriod: Period;
+}) => {
+    const currentMonthQuery = useFetchingVideo(currentMonthPeriod);
+    const prevMonthQuery = useFetchingVideo(prevMonthPeriod);
+    const nextMonthQuery = useFetchingVideo(nextMonthPeriod);
 
-export default useVideo;
+    return { currentMonthQuery, prevMonthQuery, nextMonthQuery };
+};

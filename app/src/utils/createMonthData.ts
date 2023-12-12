@@ -7,7 +7,7 @@
  * @param prevYearAndMonth 저번 달의 정보 (YYYY-MM)
  * @param nextYearAndMonth 다음번 달의 정보 (YYYY-MM)
  */
-const createCalendarData = (
+const createMonthData = (
     startingDayOfWeek: number,
     endDateOfCurrentMonth: number,
     endDateOfLastMonth: number,
@@ -48,4 +48,4 @@ const createCalendarData = (
     return calendarData;
 };
 
-export default createCalendarData;
+export default createMonthData;

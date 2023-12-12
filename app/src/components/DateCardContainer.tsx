@@ -1,10 +1,10 @@
 import { MouseEvent } from "react";
-import dayjs from "dayjs";
 import styled, { css } from "styled-components";
 
 import { FaRegHeart } from "react-icons/fa";
 
-import useVideo from "@/hooks/useVideo";
+import { useFetchingAllVideo } from "@/hooks/useVideo";
+import createMonthPeriod from "@/utils/createMonthPeriod";
 import { mainRed, gray2 } from "@/styles/colors";
 import { bigSize } from "@/styles/fontSize";
 
@@ -21,17 +21,6 @@ const DateCardContainer = ({
     nextYearAndMonth,
     calendarData,
 }: Props) => {
-    const currentMonthData = calendarData[currentYearAndMonth];
-
-    const startingDate = dayjs(
-        currentYearAndMonth + "-" + String(currentMonthData[0])
-    ).format("YYYY-MM-DD");
-    const endDate = dayjs(
-        currentYearAndMonth +
-            "-" +
-            String(currentMonthData[currentMonthData.length - 1])
-    ).format("YYYY-MM-DD");
-
     const onClick = (e: MouseEvent<HTMLDivElement>) => {
         const name = e.currentTarget.getAttribute("name");
 
@@ -40,19 +29,41 @@ const DateCardContainer = ({
         }
     };
 
-    const query = useVideo(startingDate, endDate);
+    const query = useFetchingAllVideo(
+        createMonthPeriod({
+            currentYearAndMonth,
+            prevYearAndMonth,
+            nextYearAndMonth,
+        })
+    );
 
-    if (query.error) {
-        return null;
-    }
+    const { currentMonthQuery, prevMonthQuery, nextMonthQuery } = query;
 
-    const videoData = query.data;
+    const currentMonthVideoData = currentMonthQuery.data;
+    const prevMonthVideoData = prevMonthQuery.data;
+    const nextMonthVideoData = nextMonthQuery.data;
 
     return (
         <Wrapper>
             {calendarData[prevYearAndMonth].map((value, idx) => {
+                let thumbnailData = null;
+
+                if (prevMonthVideoData) {
+                    thumbnailData = prevMonthVideoData.get(
+                        prevYearAndMonth +
+                            "-" +
+                            value.toString().padStart(2, "0")
+                    );
+                }
+
                 return (
-                    <DateCard key={idx} id="prevMonth">
+                    <DateCard
+                        key={idx}
+                        id="currentMonth"
+                        name={thumbnailData?.videoId}
+                        $thumbnail={thumbnailData?.thumbnails.high.url}
+                        onClick={onClick}
+                    >
                         <CardInfo>
                             <Date>{value}</Date>
                             <Like>
@@ -63,15 +74,22 @@ const DateCardContainer = ({
                 );
             })}
             {calendarData[currentYearAndMonth].map((value, idx) => {
-                const thumbnailData =
-                    videoData[currentYearAndMonth + "-" + String(value)];
+                let thumbnailData = null;
+
+                if (currentMonthVideoData) {
+                    thumbnailData = currentMonthVideoData.get(
+                        currentYearAndMonth +
+                            "-" +
+                            value.toString().padStart(2, "0")
+                    );
+                }
 
                 return (
                     <DateCard
                         key={idx}
                         id="currentMonth"
                         name={thumbnailData?.videoId}
-                        $thumbnail={thumbnailData?.snippet.thumbnails.high.url}
+                        $thumbnail={thumbnailData?.thumbnails.high.url}
                         onClick={onClick}
                     >
                         <CardInfo>
@@ -84,8 +102,24 @@ const DateCardContainer = ({
                 );
             })}
             {calendarData[nextYearAndMonth].map((value, idx) => {
+                let thumbnailData = null;
+
+                if (nextMonthVideoData) {
+                    thumbnailData = nextMonthVideoData.get(
+                        nextYearAndMonth +
+                            "-" +
+                            value.toString().padStart(2, "0")
+                    );
+                }
+
                 return (
-                    <DateCard key={idx} id="nextMonth">
+                    <DateCard
+                        key={idx}
+                        id="currentMonth"
+                        name={thumbnailData?.videoId}
+                        $thumbnail={thumbnailData?.thumbnails.high.url}
+                        onClick={onClick}
+                    >
                         <CardInfo>
                             <Date>{value}</Date>
                             <Like>
@@ -110,10 +144,6 @@ const Wrapper = styled.div`
     background-color: ${gray2};
 
     @media (max-width: 1250px) {
-        /* display: flex;
-        flex-direction: column;
-        align-items: center;
-        gap: 10%; */
         display: block;
 
         height: 100vh;
@@ -189,9 +219,6 @@ const Date = styled.span`
 
 const Like = styled.button`
     width: 10%;
-    /* height: 20%; */
-
-    /* padding-top: 2%; */
 
     & svg {
         transform: scale(1.2);

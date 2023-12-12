@@ -4,7 +4,7 @@ import styled from "styled-components";
 
 import { GrPrevious, GrNext } from "react-icons/gr";
 
-import createCalendarData from "@/utils/createCalendarData";
+import createMonthData from "@/utils/createMonthData";
 import { bigSize } from "@/styles/fontSize";
 import { gray2, mainRed } from "@/styles/colors";
 import Loading from "./Loading";
@@ -44,7 +44,7 @@ const Calendar = () => {
     const currentYearAndMonth = current.format("YYYY-MM");
     const nextYearAndMonth = current.add(1, "month").format("YYYY-MM");
 
-    const calendarData = createCalendarData(
+    const calendarData = createMonthData(
         startingDayOfWeek,
         endDate,
         endDateOfLastMonth,
