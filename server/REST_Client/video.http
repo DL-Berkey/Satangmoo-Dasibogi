@@ -1,0 +1,18 @@
+@URL = http://localhost:9090
+
+### 특정 일의 영상만 업데이트
+POST {{URL}}/update
+Content-Type: application/json
+
+{
+    "date": "2023-12-01"
+}
+
+### 특정 주기의 영상을 업데이트 (startingDate와 endDate가 같을 경우 하나만 업데이트)
+POST {{URL}}/update/period
+Content-Type: application/json
+
+{
+    "startingDate": "2023-11-01",
+    "endDate": "2023-11-30"
+}
