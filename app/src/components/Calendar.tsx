@@ -5,6 +5,7 @@ import styled from "styled-components";
 import createMonthData from "@/utils/createMonthData";
 
 import CalendarNavigation from "./CalendarNavigation";
+import ErrorBoundary from "./error/ErrorBoundary";
 import Loading from "./Loading";
 import DayOfWeekCardContainer from "./DayOfWeekCardContainer";
 import DateCardContainer from "./DateCardContainer";
@@ -66,21 +67,23 @@ const Calendar = () => {
 
     return (
         <Wrapper>
-            <CalendarNavigation
-                current={current}
-                changeCurrent={changeCurrent}
-                goPrevMonth={goPrevMonth}
-                goNextMonth={goNextMonth}
-            />
-            <DayOfWeekCardContainer dayOfWeekMap={DAY_OF_WEEK_MAP} />
-            <Suspense fallback={<Loading />}>
-                <DateCardContainer
-                    prevYearAndMonth={prevYearAndMonth}
-                    currentYearAndMonth={currentYearAndMonth}
-                    nextYearAndMonth={nextYearAndMonth}
-                    calendarData={calendarData}
+            <ErrorBoundary>
+                <CalendarNavigation
+                    current={current}
+                    changeCurrent={changeCurrent}
+                    goPrevMonth={goPrevMonth}
+                    goNextMonth={goNextMonth}
                 />
-            </Suspense>
+                <DayOfWeekCardContainer dayOfWeekMap={DAY_OF_WEEK_MAP} />
+                <Suspense fallback={<Loading />}>
+                    <DateCardContainer
+                        prevYearAndMonth={prevYearAndMonth}
+                        currentYearAndMonth={currentYearAndMonth}
+                        nextYearAndMonth={nextYearAndMonth}
+                        calendarData={calendarData}
+                    />
+                </Suspense>
+            </ErrorBoundary>
         </Wrapper>
     );
 };

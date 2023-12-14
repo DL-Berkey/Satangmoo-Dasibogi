@@ -41,15 +41,9 @@ const DateCardContainer = ({
     return (
         <Wrapper className={sorting}>
             {calendarData[prevYearAndMonth].map((value) => {
-                let videoData = undefined;
-
-                if (prevMonthVideoData) {
-                    videoData = prevMonthVideoData.get(
-                        prevYearAndMonth +
-                            "-" +
-                            value.toString().padStart(2, "0")
-                    );
-                }
+                let videoData = prevMonthVideoData.get(
+                    prevYearAndMonth + "-" + value.toString().padStart(2, "0")
+                );
 
                 // sorting mode가 list면 렌더링하지 않음
                 if (sorting === "list") {
@@ -67,15 +61,11 @@ const DateCardContainer = ({
                 );
             })}
             {calendarData[currentYearAndMonth].map((value) => {
-                let videoData = undefined;
-
-                if (currentMonthVideoData) {
-                    videoData = currentMonthVideoData.get(
-                        currentYearAndMonth +
-                            "-" +
-                            value.toString().padStart(2, "0")
-                    );
-                }
+                let videoData = currentMonthVideoData.get(
+                    currentYearAndMonth +
+                        "-" +
+                        value.toString().padStart(2, "0")
+                );
 
                 if (sorting === "list" && videoData === undefined) {
                     return null;
@@ -92,15 +82,9 @@ const DateCardContainer = ({
                 );
             })}
             {calendarData[nextYearAndMonth].map((value) => {
-                let videoData = undefined;
-
-                if (nextMonthVideoData) {
-                    videoData = nextMonthVideoData.get(
-                        nextYearAndMonth +
-                            "-" +
-                            value.toString().padStart(2, "0")
-                    );
-                }
+                let videoData = nextMonthVideoData.get(
+                    nextYearAndMonth + "-" + value.toString().padStart(2, "0")
+                );
 
                 // sorting mode가 list면 렌더링하지 않음
                 if (sorting === "list") {

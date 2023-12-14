@@ -9,7 +9,7 @@ const getVideoMap = async (startingDate: string, endDate: string) => {
         .lte("publishedAt", endDate);
 
     if (error) {
-        return null;
+        throw error;
     }
 
     const result = new Map<string, VideoData>();
@@ -36,6 +36,10 @@ export const useFetchingVideo = (monthPeriod: Period) => {
         staleTime: Infinity,
         gcTime: Infinity,
     });
+
+    if (query.error) {
+        throw query.error;
+    }
 
     return query;
 };
