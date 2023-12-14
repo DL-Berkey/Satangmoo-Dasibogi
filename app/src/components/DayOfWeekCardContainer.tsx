@@ -1,14 +1,19 @@
+import { useRecoilValue } from "recoil";
 import styled, { css } from "styled-components";
 
+import sortingAtom from "@/recoil/sortingAtom";
 import { mainRed } from "@/styles/colors";
+import { dayOfWeekCardContainerMedia } from "@/styles/media";
 
 interface Props {
     dayOfWeekMap: Record<DAY_OF_WEEK, string>;
 }
 
 const DayOfWeekCardContainer = ({ dayOfWeekMap }: Props) => {
+    const sorting = useRecoilValue(sortingAtom);
+
     return (
-        <Wrapper>
+        <Wrapper $visible={"calendar" === sorting}>
             {Object.entries(dayOfWeekMap).map(([key, value]) => {
                 return (
                     <DayOfWeekCard
@@ -23,7 +28,7 @@ const DayOfWeekCardContainer = ({ dayOfWeekMap }: Props) => {
     );
 };
 
-const Wrapper = styled.div`
+const Wrapper = styled.div<{ $visible: boolean }>`
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -31,9 +36,13 @@ const Wrapper = styled.div`
 
     height: 5%;
 
-    @media (max-width: 1250px) {
-        display: none;
-    }
+    ${(props) =>
+        !props.$visible &&
+        css`
+            display: none;
+        `}
+
+    ${dayOfWeekCardContainerMedia}
 `;
 
 const DayOfWeekCard = styled.div<{

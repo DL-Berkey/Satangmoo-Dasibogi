@@ -36,3 +36,5 @@ interface VideoData {
     };
     publishedAt: string;
 }
+
+type SortingMode = "calendar" | "list";

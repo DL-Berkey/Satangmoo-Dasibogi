@@ -2,14 +2,13 @@ import { Suspense, useState } from "react";
 import dayjs from "dayjs";
 import styled from "styled-components";
 
-import { GrPrevious, GrNext } from "react-icons/gr";
-
 import createMonthData from "@/utils/createMonthData";
-import { bigSize } from "@/styles/fontSize";
-import { gray2, mainRed } from "@/styles/colors";
+
+import CalendarNavigation from "./CalendarNavigation";
 import Loading from "./Loading";
 import DayOfWeekCardContainer from "./DayOfWeekCardContainer";
 import DateCardContainer from "./DateCardContainer";
+import { gray2 } from "@/styles/colors";
 
 const DAY_OF_WEEK_MAP: Record<DAY_OF_WEEK, string> = {
     sunday: "일요일",
@@ -53,23 +52,26 @@ const Calendar = () => {
         nextYearAndMonth
     );
 
+    const changeCurrent = (date: Date) => {
+        setCurrent(dayjs(date));
+    };
+
+    const goPrevMonth = () => {
+        setCurrent((prev) => prev.subtract(1, "month"));
+    };
+
+    const goNextMonth = () => {
+        setCurrent((prev) => prev.add(1, "month"));
+    };
+
     return (
         <Wrapper>
-            <Navigation>
-                <Button
-                    onClick={() =>
-                        setCurrent((prev) => prev.subtract(1, "month"))
-                    }
-                >
-                    <GrPrevious />
-                </Button>
-                <h2>{current.format("YYYY 년 MM 월")}</h2>
-                <Button
-                    onClick={() => setCurrent((prev) => prev.add(1, "month"))}
-                >
-                    <GrNext />
-                </Button>
-            </Navigation>
+            <CalendarNavigation
+                current={current}
+                changeCurrent={changeCurrent}
+                goPrevMonth={goPrevMonth}
+                goNextMonth={goNextMonth}
+            />
             <DayOfWeekCardContainer dayOfWeekMap={DAY_OF_WEEK_MAP} />
             <Suspense fallback={<Loading />}>
                 <DateCardContainer
@@ -87,35 +89,6 @@ const Wrapper = styled.section`
     height: 100%;
 
     border-bottom: 2px solid ${gray2};
-`;
-
-const Navigation = styled.nav`
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 2%;
-
-    height: 10%;
-
-    h2 {
-        width: fit-content;
-
-        font-size: ${bigSize};
-    }
-`;
-
-const Button = styled.button`
-    width: 4%;
-
-    & svg {
-        transform: scale(3);
-    }
-
-    &:hover {
-        & svg {
-            color: ${mainRed};
-        }
-    }
 `;
 
 export default Calendar;

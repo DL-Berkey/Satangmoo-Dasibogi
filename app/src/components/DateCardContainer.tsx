@@ -1,12 +1,13 @@
-import { MouseEvent } from "react";
-import styled, { css } from "styled-components";
-
-import { FaRegHeart } from "react-icons/fa";
+import { useRecoilValue } from "recoil";
+import styled from "styled-components";
 
 import { useFetchingAllVideo } from "@/hooks/useVideo";
+import sortingAtom from "@/recoil/sortingAtom";
 import createMonthPeriod from "@/utils/createMonthPeriod";
-import { mainRed, gray2 } from "@/styles/colors";
-import { bigSize } from "@/styles/fontSize";
+import DateCard from "./DateCard";
+import { gray2 } from "@/styles/colors";
+import { dateCardContainerMedia } from "@/styles/media";
+import { dateCardContainerListMode } from "@/styles/listMode";
 
 interface Props {
     prevYearAndMonth: string;
@@ -21,14 +22,6 @@ const DateCardContainer = ({
     nextYearAndMonth,
     calendarData,
 }: Props) => {
-    const onClick = (e: MouseEvent<HTMLDivElement>) => {
-        const name = e.currentTarget.getAttribute("name");
-
-        if (name) {
-            window.open(`https://www.youtube.com/watch?v=${name}`, "_blank");
-        }
-    };
-
     const query = useFetchingAllVideo(
         createMonthPeriod({
             currentYearAndMonth,
@@ -43,90 +36,82 @@ const DateCardContainer = ({
     const prevMonthVideoData = prevMonthQuery.data;
     const nextMonthVideoData = nextMonthQuery.data;
 
+    const sorting = useRecoilValue(sortingAtom);
+
     return (
-        <Wrapper>
-            {calendarData[prevYearAndMonth].map((value, idx) => {
-                let thumbnailData = null;
+        <Wrapper className={sorting}>
+            {calendarData[prevYearAndMonth].map((value) => {
+                let videoData = undefined;
 
                 if (prevMonthVideoData) {
-                    thumbnailData = prevMonthVideoData.get(
+                    videoData = prevMonthVideoData.get(
                         prevYearAndMonth +
                             "-" +
                             value.toString().padStart(2, "0")
                     );
                 }
 
+                // sorting mode가 list면 렌더링하지 않음
+                if (sorting === "list") {
+                    return null;
+                }
+
                 return (
                     <DateCard
-                        key={idx}
-                        id="currentMonth"
-                        name={thumbnailData?.videoId}
-                        $thumbnail={thumbnailData?.thumbnails.high.url}
-                        onClick={onClick}
-                    >
-                        <CardInfo>
-                            <Date>{value}</Date>
-                            <Like>
-                                <FaRegHeart />
-                            </Like>
-                        </CardInfo>
-                    </DateCard>
+                        key={value}
+                        date={String(value)}
+                        videoData={videoData}
+                        sortingMode={sorting}
+                    />
                 );
             })}
-            {calendarData[currentYearAndMonth].map((value, idx) => {
-                let thumbnailData = null;
+            {calendarData[currentYearAndMonth].map((value) => {
+                let videoData = undefined;
 
                 if (currentMonthVideoData) {
-                    thumbnailData = currentMonthVideoData.get(
+                    videoData = currentMonthVideoData.get(
                         currentYearAndMonth +
                             "-" +
                             value.toString().padStart(2, "0")
                     );
                 }
 
+                if (sorting === "list" && videoData === undefined) {
+                    return null;
+                }
+
                 return (
                     <DateCard
-                        key={idx}
-                        id="currentMonth"
-                        name={thumbnailData?.videoId}
-                        $thumbnail={thumbnailData?.thumbnails.high.url}
-                        onClick={onClick}
-                    >
-                        <CardInfo>
-                            <Date>{value}</Date>
-                            <Like>
-                                <FaRegHeart />
-                            </Like>
-                        </CardInfo>
-                    </DateCard>
+                        key={value}
+                        date={String(value)}
+                        videoData={videoData}
+                        sortingMode={sorting}
+                    />
                 );
             })}
-            {calendarData[nextYearAndMonth].map((value, idx) => {
-                let thumbnailData = null;
+            {calendarData[nextYearAndMonth].map((value) => {
+                let videoData = undefined;
 
                 if (nextMonthVideoData) {
-                    thumbnailData = nextMonthVideoData.get(
+                    videoData = nextMonthVideoData.get(
                         nextYearAndMonth +
                             "-" +
                             value.toString().padStart(2, "0")
                     );
                 }
 
+                // sorting mode가 list면 렌더링하지 않음
+                if (sorting === "list") {
+                    return null;
+                }
+
                 return (
                     <DateCard
-                        key={idx}
-                        id="currentMonth"
-                        name={thumbnailData?.videoId}
-                        $thumbnail={thumbnailData?.thumbnails.high.url}
-                        onClick={onClick}
-                    >
-                        <CardInfo>
-                            <Date>{value}</Date>
-                            <Like>
-                                <FaRegHeart />
-                            </Like>
-                        </CardInfo>
-                    </DateCard>
+                        key={value}
+                        date={String(value)}
+                        videoData={videoData}
+                        sortingMode={sorting}
+                    />
                 );
             })}
         </Wrapper>
@@ -143,86 +128,9 @@ const Wrapper = styled.div`
 
     background-color: ${gray2};
 
-    @media (max-width: 1250px) {
-        display: block;
+    ${dateCardContainerListMode}
 
-        height: 100vh;
-
-        overflow: scroll;
-    }
-`;
-
-const DateCard = styled.div<{ name?: string; $thumbnail?: string }>`
-    display: flex;
-    justify-content: space-between;
-    align-items: start;
-
-    height: 100%;
-
-    padding: 2% 3%;
-
-    font-size: 1.2rem;
-    color: ${(props) => props.$thumbnail && css`white`};
-
-    background: ${(props) =>
-        props.$thumbnail
-            ? css`url(${props.$thumbnail}) center/cover no-repeat`
-            : css`white`};
-
-    & button svg {
-        fill: ${(props) => props.$thumbnail && css`white`};
-    }
-
-    @media (max-width: 1250px) {
-        width: 90%;
-        height: 280px;
-
-        margin: auto;
-
-        font-size: ${bigSize};
-
-        border: 2px solid ${mainRed};
-
-        & + & {
-            margin-top: 10%;
-        }
-
-        &#prevMonth,
-        &#nextMonth {
-            display: none;
-        }
-    }
-`;
-
-const CardInfo = styled.div`
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-
-    width: 100%;
-    height: 20%;
-
-    @media (max-width: 1250px) {
-        font-size: ${bigSize};
-
-        & button svg {
-            transform: scale(3);
-        }
-    }
-`;
-
-const Date = styled.span`
-    width: fit-content;
-
-    border-bottom: 2px solid ${mainRed};
-`;
-
-const Like = styled.button`
-    width: 10%;
-
-    & svg {
-        transform: scale(1.2);
-    }
+    ${dateCardContainerMedia}
 `;
 
 export default DateCardContainer;

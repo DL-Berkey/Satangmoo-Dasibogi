@@ -1,9 +1,10 @@
 import styled from "styled-components";
 
-import logoimg from "/logoImg.jpg";
+import logoimg from "/togethertangmoo.png";
 import { gray, mainRed } from "@/styles/colors";
 import { logo } from "@/styles/fontSize";
 import Calendar from "./Calendar";
+import { headerMedia } from "@/styles/media";
 
 const Layout = () => {
     return (
@@ -45,14 +46,7 @@ const Header = styled.header`
         font-size: ${logo};
     }
 
-    @media (max-width: 1250px) {
-        & img {
-            width: 10%;
-            height: 100%;
-
-            margin-right: 2%;
-        }
-    }
+    ${headerMedia};
 `;
 
 const Main = styled.main`
