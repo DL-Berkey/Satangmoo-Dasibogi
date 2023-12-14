@@ -58,6 +58,7 @@ const DateCardContainer = ({
 
                 return (
                     <DateCard
+                        id="prevMonth"
                         key={value}
                         date={String(value)}
                         videoData={videoData}
@@ -82,6 +83,7 @@ const DateCardContainer = ({
 
                 return (
                     <DateCard
+                        id="currentMonth"
                         key={value}
                         date={String(value)}
                         videoData={videoData}
@@ -107,6 +109,7 @@ const DateCardContainer = ({
 
                 return (
                     <DateCard
+                        id="nextMonth"
                         key={value}
                         date={String(value)}
                         videoData={videoData}

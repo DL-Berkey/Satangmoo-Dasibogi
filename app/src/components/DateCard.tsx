@@ -14,15 +14,14 @@ import { cardInfoMedia, dateCardMedia } from "@/styles/media";
 import { defaultSize, mediumSize } from "@/styles/fontSize";
 
 interface Props {
+    id: string;
     date: string;
     videoData?: VideoData;
     sortingMode: SortingMode;
 }
 
-const DateCard = ({ date, videoData, sortingMode }: Props) => {
+const DateCard = ({ id, date, videoData, sortingMode }: Props) => {
     const onClick = (e: MouseEvent<HTMLDivElement>) => {
-        // const currentTarget = e.target as HTMLDivElement;
-        // const videoid = currentTarget.getAttribute("videoid");
         const videoid = e.currentTarget.getAttribute("videoid");
 
         if (videoid) {
@@ -38,7 +37,8 @@ const DateCard = ({ date, videoData, sortingMode }: Props) => {
 
     return (
         <Wrapper
-            className={sortingMode}
+            id={id}
+            className={[sortingMode].join(" ")}
             videoid={videoData?.videoId}
             onClick={onClick}
         >
@@ -154,6 +154,8 @@ const Thumbnail = styled.div.attrs<{
         };
     }
 })`
+    width: 100%;
+
     aspect-ratio: 16 / 9;
 
     ${thumbnailListMode}

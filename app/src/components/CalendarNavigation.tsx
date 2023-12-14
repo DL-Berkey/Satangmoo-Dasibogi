@@ -10,7 +10,11 @@ import { FaRegCalendarAlt, FaRegListAlt } from "react-icons/fa";
 import sortingAtom from "@/recoil/sortingAtom";
 import { bigSize, defaultSize } from "@/styles/fontSize";
 import { gray, mainRed } from "@/styles/colors";
-import { sortingMenuMedia } from "@/styles/media";
+import {
+    NavigateMonthMedia,
+    datePickerMedia,
+    sortingMenuMedia,
+} from "@/styles/media";
 
 interface Props {
     current: Dayjs;
@@ -73,9 +77,9 @@ const CalendarNavigation = ({
                     <span>목록으로 보기</span>
                 </SortingButton>
             </SortingMenu>
-            <Button onClick={goPrevMonth}>
+            <NavigateMonthButton onClick={goPrevMonth}>
                 <GrPrevious />
-            </Button>
+            </NavigateMonthButton>
             <h2 onClick={onClickYearAndMonth}>
                 {current.format("YYYY년 MM월")}
             </h2>
@@ -86,9 +90,9 @@ const CalendarNavigation = ({
                     onChange={onChangeDatePicker}
                 />
             )}
-            <Button onClick={goNextMonth}>
+            <NavigateMonthButton onClick={goNextMonth}>
                 <GrNext />
-            </Button>
+            </NavigateMonthButton>
         </Wrapper>
     );
 };
@@ -121,6 +125,7 @@ const SortingMenu = styled.div`
     left: 2%;
 
     display: flex;
+    justify-content: space-between;
     align-items: center;
     gap: 8%;
 
@@ -190,7 +195,7 @@ const SortingButton = styled.button<{ $active: boolean }>`
         `}
 `;
 
-const Button = styled.button`
+const NavigateMonthButton = styled.button`
     width: 4%;
     height: 90%;
 
@@ -203,6 +208,8 @@ const Button = styled.button`
             color: ${mainRed};
         }
     }
+
+    ${NavigateMonthMedia};
 `;
 
 const DatePicker = styled.input`
@@ -221,6 +228,10 @@ const DatePicker = styled.input`
 
     border: 2px solid ${mainRed};
     border-radius: 10px;
+
+    z-index: 1;
+
+    ${datePickerMedia};
 `;
 
 export default CalendarNavigation;
