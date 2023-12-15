@@ -1,15 +1,13 @@
-import { Suspense, useState } from "react";
+import { useState, Suspense } from "react";
 import dayjs from "dayjs";
 import styled from "styled-components";
 
 import createMonthData from "@/utils/createMonthData";
-
 import CalendarNavigation from "./CalendarNavigation";
 import ErrorBoundary from "./error/ErrorBoundary";
 import Loading from "./Loading";
 import DayOfWeekCardContainer from "./DayOfWeekCardContainer";
 import DateCardContainer from "./DateCardContainer";
-import { gray2 } from "@/styles/colors";
 
 const DAY_OF_WEEK_MAP: Record<DAY_OF_WEEK, string> = {
     sunday: "일요일",
@@ -89,9 +87,9 @@ const Calendar = () => {
 };
 
 const Wrapper = styled.section`
-    height: 100%;
+    position: relative;
 
-    border-bottom: 2px solid ${gray2};
+    height: 100%;
 `;
 
 export default Calendar;
