@@ -6,6 +6,7 @@ import styled, { css } from "styled-components";
 import { FaHeart } from "react-icons/fa";
 
 import sortingAtom from "@/recoil/sortingAtom";
+import usePopup from "@/hooks/usePopup";
 import { mainRed } from "@/styles/colors";
 import {
     cardInfoListMode,
@@ -23,6 +24,11 @@ interface Props {
 
 const DateCard = ({ id, date, videoData }: Props) => {
     const sortingMode = useRecoilValue(sortingAtom);
+
+    const { registerPopup } = usePopup({
+        sortingMode,
+        visibleMode: "calendar",
+    });
 
     const onClick = (e: MouseEvent<HTMLDivElement>) => {
         const videoid = e.currentTarget.getAttribute("videoid");
@@ -44,6 +50,7 @@ const DateCard = ({ id, date, videoData }: Props) => {
             className={sortingMode}
             videoid={videoData?.videoId}
             onClick={onClick}
+            {...registerPopup(videoData?.title)}
         >
             <CardInfo
                 className={sortingMode}

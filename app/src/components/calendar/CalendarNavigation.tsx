@@ -8,6 +8,7 @@ import { GrPrevious, GrNext } from "react-icons/gr";
 import { FaRegCalendarAlt, FaRegListAlt } from "react-icons/fa";
 
 import sortingAtom from "@/recoil/sortingAtom";
+import usePopup from "@/hooks/usePopup";
 import { bigSize, defaultSize } from "@/styles/fontSize";
 import { gray, mainRed } from "@/styles/colors";
 import {
@@ -32,6 +33,8 @@ const CalendarNavigation = ({
     const [isVisibleDatePicker, setIsDatePicker] = useState(false);
 
     const [sortingMode, setSortingMode] = useRecoilState(sortingAtom);
+
+    const { registerPopup } = usePopup();
 
     // current가 변경 되었을 때 date picker가 켜져 있다면 꺼줌
     useEffect(() => {
@@ -80,7 +83,12 @@ const CalendarNavigation = ({
             <NavigateMonthButton onClick={goPrevMonth}>
                 <GrPrevious />
             </NavigateMonthButton>
-            <h2 onClick={onClickYearAndMonth}>
+            <h2
+                onClick={onClickYearAndMonth}
+                {...registerPopup(
+                    "여기를 클릭하면 원하는 달로 바로 가실 수 있습니다."
+                )}
+            >
                 {current.format("YYYY년 MM월")}
             </h2>
             {isVisibleDatePicker && (
