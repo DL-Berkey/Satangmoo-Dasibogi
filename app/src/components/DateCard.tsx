@@ -46,7 +46,7 @@ const DateCard = ({ id, date, videoData, sortingMode }: Props) => {
                 className={sortingMode}
                 $setTransparent={videoData?.thumbnails !== undefined}
             >
-                {sortingMode === "calendar" && <Date>{date}</Date>}
+                {sortingMode === "calendar" && <Date>{date + " 일"}</Date>}
                 {videoData && (
                     <Like onClick={onClicklike}>
                         <FaHeart />
@@ -83,8 +83,6 @@ const Wrapper = styled.div<{
     font-size: 1.2rem;
 
     background: white;
-
-    height: 100%;
 
     ${dateCardListMode}
 
