@@ -1,5 +1,5 @@
 import { ReactNode, Component, ErrorInfo } from "react";
-import Error from "./Error";
+import Error from "./ErrorPage";
 
 interface Props {
     children: ReactNode;
