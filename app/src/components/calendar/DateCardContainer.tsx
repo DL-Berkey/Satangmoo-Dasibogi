@@ -56,7 +56,6 @@ const DateCardContainer = ({
                         key={value}
                         date={String(value)}
                         videoData={videoData}
-                        sortingMode={sorting}
                     />
                 );
             })}
@@ -77,7 +76,6 @@ const DateCardContainer = ({
                         key={value}
                         date={String(value)}
                         videoData={videoData}
-                        sortingMode={sorting}
                     />
                 );
             })}
@@ -97,7 +95,6 @@ const DateCardContainer = ({
                         key={value}
                         date={String(value)}
                         videoData={videoData}
-                        sortingMode={sorting}
                     />
                 );
             })}

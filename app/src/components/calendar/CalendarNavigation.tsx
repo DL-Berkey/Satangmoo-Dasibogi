@@ -31,7 +31,7 @@ const CalendarNavigation = ({
 }: Props) => {
     const [isVisibleDatePicker, setIsDatePicker] = useState(false);
 
-    const [sorting, setSorting] = useRecoilState(sortingAtom);
+    const [sortingMode, setSortingMode] = useRecoilState(sortingAtom);
 
     // current가 변경 되었을 때 date picker가 켜져 있다면 꺼줌
     useEffect(() => {
@@ -41,7 +41,7 @@ const CalendarNavigation = ({
     }, [current]);
 
     const onClickSortingButton = () => {
-        setSorting((prev) => (prev === "calendar" ? "list" : "calendar"));
+        setSortingMode((prev) => (prev === "calendar" ? "list" : "calendar"));
     };
 
     const onClickYearAndMonth = () => {
@@ -64,14 +64,14 @@ const CalendarNavigation = ({
             <SortingMenu>
                 <SortingButton
                     onClick={onClickSortingButton}
-                    $active={sorting === "calendar"}
+                    $active={sortingMode === "calendar"}
                 >
                     <FaRegCalendarAlt />
                     <span>달력으로 보기</span>
                 </SortingButton>
                 <SortingButton
                     onClick={onClickSortingButton}
-                    $active={sorting === "list"}
+                    $active={sortingMode === "list"}
                 >
                     <FaRegListAlt />
                     <span>목록으로 보기</span>

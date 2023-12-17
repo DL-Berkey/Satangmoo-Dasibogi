@@ -1,9 +1,11 @@
 import { MouseEvent } from "react";
+import { useRecoilValue } from "recoil";
 import dayjs from "dayjs";
 import styled, { css } from "styled-components";
 
 import { FaHeart } from "react-icons/fa";
 
+import sortingAtom from "@/recoil/sortingAtom";
 import { mainRed } from "@/styles/colors";
 import {
     cardInfoListMode,
@@ -17,10 +19,11 @@ interface Props {
     id: string;
     date: string;
     videoData?: VideoData;
-    sortingMode: SortingMode;
 }
 
-const DateCard = ({ id, date, videoData, sortingMode }: Props) => {
+const DateCard = ({ id, date, videoData }: Props) => {
+    const sortingMode = useRecoilValue(sortingAtom);
+
     const onClick = (e: MouseEvent<HTMLDivElement>) => {
         const videoid = e.currentTarget.getAttribute("videoid");
 
@@ -38,7 +41,7 @@ const DateCard = ({ id, date, videoData, sortingMode }: Props) => {
     return (
         <Wrapper
             id={id}
-            className={[sortingMode].join(" ")}
+            className={sortingMode}
             videoid={videoData?.videoId}
             onClick={onClick}
         >
