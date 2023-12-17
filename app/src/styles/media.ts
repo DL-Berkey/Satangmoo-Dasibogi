@@ -78,7 +78,7 @@ export const dateCardContainerMedia = css`
     @media ${media.medium} {
         display: block;
 
-        height: fit-content;
+        height: 100%;
     }
 `;
 
@@ -118,5 +118,13 @@ export const cardInfoMedia = css`
         & button svg {
             transform: scale(2);
         }
+    }
+`;
+
+export const goUpButtonMedia = css`
+    @media ${media.medium} {
+        right: 5%;
+
+        display: block;
     }
 `;

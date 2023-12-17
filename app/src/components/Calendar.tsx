@@ -8,6 +8,7 @@ import ErrorBoundary from "./error/ErrorBoundary";
 import Loading from "./Loading";
 import DayOfWeekCardContainer from "./DayOfWeekCardContainer";
 import DateCardContainer from "./DateCardContainer";
+import GoUpButton from "./GoUpButton";
 
 const DAY_OF_WEEK_MAP: Record<DAY_OF_WEEK, string> = {
     sunday: "일요일",
@@ -82,13 +83,12 @@ const Calendar = () => {
                     />
                 </Suspense>
             </ErrorBoundary>
+            <GoUpButton />
         </Wrapper>
     );
 };
 
 const Wrapper = styled.section`
-    position: relative;
-
     height: 100%;
 `;
 

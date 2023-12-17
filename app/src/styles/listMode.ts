@@ -4,11 +4,10 @@ export const dateCardContainerListMode = css`
     &.list {
         display: block;
         width: 60%;
+        height: fit-content;
 
         margin: 0 auto;
         padding-top: 2%;
-
-        overflow: scroll;
     }
 `;
 
@@ -45,7 +44,6 @@ export const cardInfoListMode = css`
 
             width: 100%;
 
-            /* padding: 0 auto; */
             padding: 25%;
         }
 
@@ -59,5 +57,11 @@ export const cardInfoListMode = css`
 export const thumbnailListMode = css`
     &.list {
         width: 40%;
+    }
+`;
+
+export const goUpButtonListMode = css`
+    &.list {
+        display: block;
     }
 `;

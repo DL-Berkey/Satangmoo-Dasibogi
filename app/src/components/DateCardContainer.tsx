@@ -2,13 +2,11 @@ import { useRef } from "react";
 import { useRecoilValue } from "recoil";
 import styled from "styled-components";
 
-import { FaArrowUp } from "react-icons/fa";
-
 import { useFetchingAllVideo } from "@/hooks/useVideo";
 import sortingAtom from "@/recoil/sortingAtom";
 import createMonthPeriod from "@/utils/createMonthPeriod";
 import DateCard from "./DateCard";
-import { gray2, mainRed } from "@/styles/colors";
+import { gray2 } from "@/styles/colors";
 import { dateCardContainerMedia } from "@/styles/media";
 import { dateCardContainerListMode } from "@/styles/listMode";
 
@@ -37,25 +35,13 @@ const DateCardContainer = ({
 
     const { currentMonthQuery, prevMonthQuery, nextMonthQuery } = query;
 
-    const currentMonthVideoData = currentMonthQuery.data;
-    const prevMonthVideoData = prevMonthQuery.data;
-    const nextMonthVideoData = nextMonthQuery.data;
-
     const sorting = useRecoilValue(sortingAtom);
-
-    const onClickGoUpButton = () => {
-        if (!containerRef.current) {
-            return;
-        }
-
-        containerRef.current.scrollTo({ top: 0, behavior: "smooth" });
-    };
 
     return (
         <>
             <Wrapper ref={containerRef} className={sorting}>
                 {calendarData[prevYearAndMonth].map((value) => {
-                    let videoData = prevMonthVideoData.get(
+                    let videoData = prevMonthQuery.data.get(
                         prevYearAndMonth +
                             "-" +
                             value.toString().padStart(2, "0")
@@ -77,7 +63,7 @@ const DateCardContainer = ({
                     );
                 })}
                 {calendarData[currentYearAndMonth].map((value) => {
-                    let videoData = currentMonthVideoData.get(
+                    let videoData = currentMonthQuery.data.get(
                         currentYearAndMonth +
                             "-" +
                             value.toString().padStart(2, "0")
@@ -98,7 +84,7 @@ const DateCardContainer = ({
                     );
                 })}
                 {calendarData[nextYearAndMonth].map((value) => {
-                    let videoData = nextMonthVideoData.get(
+                    let videoData = nextMonthQuery.data.get(
                         nextYearAndMonth +
                             "-" +
                             value.toString().padStart(2, "0")
@@ -120,11 +106,6 @@ const DateCardContainer = ({
                     );
                 })}
             </Wrapper>
-            {sorting === "list" && (
-                <GoUpButton onClick={onClickGoUpButton}>
-                    <FaArrowUp />
-                </GoUpButton>
-            )}
         </>
     );
 };
@@ -144,26 +125,6 @@ const Wrapper = styled.div<{
     ${dateCardContainerListMode}
 
     ${dateCardContainerMedia}
-`;
-
-const GoUpButton = styled.button`
-    position: absolute;
-
-    bottom: 2%;
-    right: 14%;
-
-    width: 3%;
-
-    aspect-ratio: 1;
-
-    background: ${mainRed};
-    border-radius: 25%;
-
-    & svg {
-        fill: white;
-
-        transform: scale(2);
-    }
 `;
 
 export default DateCardContainer;

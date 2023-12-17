@@ -32,7 +32,9 @@ const GlobalStyle = createGlobalStyle`
     // 기본이 될 화면 사이즈
     #root {
         width: 100vw;
-        height: 961px;
+        height: 100vh;
+
+        overflow: scroll;
     }
 `;
 

@@ -1,9 +1,9 @@
 import styled from "styled-components";
 
 import logoimg from "/togethertangmoo.png";
+import Calendar from "./Calendar";
 import { gray, mainRed } from "@/styles/colors";
 import { logo } from "@/styles/fontSize";
-import Calendar from "./Calendar";
 import { headerMedia } from "@/styles/media";
 
 const Layout = () => {
