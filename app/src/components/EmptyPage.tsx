@@ -4,6 +4,8 @@ import styled from "styled-components";
 import sortingAtom from "@/recoil/sortingAtom";
 import image from "@/assets/sadtangmoo.png";
 import { bigSize } from "@/styles/fontSize";
+import { emptyPageMedia } from "@/styles/media";
+import { emptyPageListMode } from "@/styles/listMode";
 
 const EmptyPage = () => {
     const sortingMode = useRecoilValue(sortingAtom);
@@ -17,10 +19,14 @@ const EmptyPage = () => {
 };
 
 const Wrapper = styled.div`
-    display: grid;
+    display: none;
     place-content: center;
 
     height: 100%;
+
+    ${emptyPageListMode}
+
+    ${emptyPageMedia}
 `;
 
 const Image = styled.img`

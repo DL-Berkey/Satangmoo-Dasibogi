@@ -65,3 +65,9 @@ export const goUpButtonListMode = css`
         display: block;
     }
 `;
+
+export const emptyPageListMode = css`
+    &.list {
+        display: grid;
+    }
+`;

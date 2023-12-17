@@ -102,9 +102,7 @@ const DateCardContainer = ({
                 );
             })}
             {/* 목록으로 보기에서 다시보기 영상이 없을 때 띄우는 페이지 */}
-            {sorting === "list" && currentMonthQuery.data.size === 0 && (
-                <EmptyPage />
-            )}
+            {currentMonthQuery.data.size === 0 && <EmptyPage />}
         </Wrapper>
     );
 };

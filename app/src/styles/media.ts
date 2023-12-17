@@ -128,3 +128,9 @@ export const goUpButtonMedia = css`
         display: block;
     }
 `;
+
+export const emptyPageMedia = css`
+    @media ${media.medium} {
+        display: grid;
+    }
+`;
