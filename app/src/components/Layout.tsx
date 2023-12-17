@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
 import logoimg from "/togethertangmoo.png";
-import Calendar from "./Calendar";
+import Calendar from "./calendar/Calendar";
 import { gray, mainRed } from "@/styles/colors";
 import { logo } from "@/styles/fontSize";
 import { headerMedia } from "@/styles/media";

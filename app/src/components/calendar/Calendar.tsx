@@ -4,11 +4,11 @@ import styled from "styled-components";
 
 import createMonthData from "@/utils/createMonthData";
 import CalendarNavigation from "./CalendarNavigation";
-import ErrorBoundary from "./error/ErrorBoundary";
-import Loading from "./Loading";
+import ErrorBoundary from "../error/ErrorBoundary";
+import Loading from "../Loading";
 import DayOfWeekCardContainer from "./DayOfWeekCardContainer";
 import DateCardContainer from "./DateCardContainer";
-import GoUpButton from "./GoUpButton";
+import GoUpButton from "../GoUpButton";
 
 const DAY_OF_WEEK_MAP: Record<DAY_OF_WEEK, string> = {
     sunday: "일요일",
