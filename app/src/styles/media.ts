@@ -28,6 +28,12 @@ export const headerMedia = css`
     }
 `;
 
+export const footerMedia = css`
+    @media ${media.medium} {
+        display: none;
+    }
+`;
+
 export const NavigateMonthMedia = css`
     @media ${media.medium} {
         width: 12%;

@@ -6,7 +6,7 @@ import logoimg from "/togethertangmoo.png";
 import Calendar from "./calendar/Calendar";
 import { gray, mainRed } from "@/styles/colors";
 import { logo, mediumSize, smallSize } from "@/styles/fontSize";
-import { headerMedia } from "@/styles/media";
+import { footerMedia, headerMedia } from "@/styles/media";
 
 const Layout = () => {
     return (
@@ -74,6 +74,8 @@ const Footer = styled.footer`
 
     margin: 0 11%;
     padding: 1% 0;
+
+    ${footerMedia};
 
     & p {
         width: fit-content;
