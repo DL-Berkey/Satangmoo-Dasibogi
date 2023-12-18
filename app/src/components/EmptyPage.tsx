@@ -22,7 +22,7 @@ const Wrapper = styled.div`
     display: none;
     place-content: center;
 
-    height: 100%;
+    height: 83vh;
 
     ${emptyPageListMode}
 

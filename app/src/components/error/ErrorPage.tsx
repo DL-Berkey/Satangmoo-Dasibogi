@@ -30,7 +30,7 @@ const Wrapper = styled.div`
     display: grid;
     place-content: center;
 
-    height: 100%;
+    height: 91vh;
 
     padding-bottom: 10%;
 `;
