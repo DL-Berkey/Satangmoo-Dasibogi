@@ -12,11 +12,7 @@ const GoUpButton = () => {
     const sortingMode = useRecoilValue(sortingAtom);
 
     const onClickGoUpButton = () => {
-        const root = document.getElementById("root");
-
-        if (root !== null) {
-            root.scrollTo(0, 0);
-        }
+        window.scrollTo({ top: 0, behavior: "smooth" });
     };
 
     return (
