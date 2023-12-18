@@ -34,7 +34,7 @@ const Wrapper = styled.div<{ $visible: boolean }>`
     align-items: center;
     gap: 1%;
 
-    height: 5%;
+    height: 3vh;
 
     ${(props) =>
         !props.$visible &&

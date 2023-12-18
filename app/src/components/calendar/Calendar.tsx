@@ -10,6 +10,7 @@ import DayOfWeekCardContainer from "./DayOfWeekCardContainer";
 import DateCardContainer from "./DateCardContainer";
 import GoUpButton from "../GoUpButton";
 import Popup from "../Popup";
+import { gray2 } from "@/styles/colors";
 
 const DAY_OF_WEEK_MAP: Record<DAY_OF_WEEK, string> = {
     sunday: "일요일",
@@ -91,7 +92,7 @@ const Calendar = () => {
 };
 
 const Wrapper = styled.section`
-    height: 100%;
+    border-bottom: 3px solid ${gray2};
 `;
 
 export default Calendar;

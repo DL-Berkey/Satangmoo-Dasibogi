@@ -28,14 +28,6 @@ const GlobalStyle = createGlobalStyle`
             cursor: pointer;
         }
     }
-
-    // 기본이 될 화면 사이즈
-    #root {
-        width: 100vw;
-        height: 100vh;
-
-        overflow: scroll;
-    }
 `;
 
 export default GlobalStyle;

@@ -113,7 +113,7 @@ const Wrapper = styled.nav`
     align-items: center;
     gap: 2%;
 
-    height: 10%;
+    height: 8vh;
 
     h2 {
         width: fit-content;

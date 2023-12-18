@@ -13,8 +13,7 @@ const Loading = () => {
 const Wrapper = styled.div`
     position: relative;
 
-    width: 100%;
-    height: 85%;
+    height: 85vh;
 
     @keyframes spin {
         0% {

@@ -112,7 +112,7 @@ const Wrapper = styled.div<{
     grid-template-rows: repeat(6, 1fr);
     gap: 1%;
 
-    height: 85%;
+    height: 80vh;
 
     background-color: ${gray2};
 

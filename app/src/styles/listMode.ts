@@ -7,7 +7,7 @@ export const dateCardContainerListMode = css`
         height: fit-content;
 
         margin: 0 auto;
-        padding-top: 2%;
+        padding: 2% 0;
     }
 `;
 
