@@ -102,6 +102,11 @@ const Footer = styled.footer`
 
         font-size: ${smallSize};
     }
+
+    & div span a {
+        display: grid;
+        place-items: center;
+    }
 `;
 
 export default Layout;
