@@ -1,6 +1,6 @@
 import { atom, AtomEffect } from "recoil";
 
-const sortingAtomEffect: (key: string) => AtomEffect<SortingMode> =
+const sortingEffect: (key: string) => AtomEffect<SortingMode> =
     (key) =>
     ({ setSelf, onSet }) => {
         const savedValue = localStorage.getItem(key);
@@ -20,7 +20,7 @@ const sortingAtomEffect: (key: string) => AtomEffect<SortingMode> =
 const sortingAtom = atom<SortingMode>({
     key: "sortingAtom",
     default: "calendar",
-    effects: [sortingAtomEffect("sortingMode")],
+    effects: [sortingEffect("sortingMode")],
 });
 
 export default sortingAtom;

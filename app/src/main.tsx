@@ -28,7 +28,10 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
                 <GlobalStyle />
                 <App />
             </RecoilRoot>
-            <ReactQueryDevtools initialIsOpen={false} />
+            <ReactQueryDevtools
+                initialIsOpen={false}
+                buttonPosition="top-right"
+            />
         </QueryClientProvider>
     </React.StrictMode>
 );

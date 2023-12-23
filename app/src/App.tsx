@@ -1,8 +1,10 @@
 import { useEffect } from "react";
 import { useResetRecoilState } from "recoil";
+import { RouterProvider } from "react-router-dom";
 
 import sortingAtom from "./recoil/sortingAtom";
-import Layout from "./components/Layout";
+import router from "./router/router";
+import LoginModal from "@/components/LoginModal";
 
 function App() {
     const resetSortingAtom = useResetRecoilState(sortingAtom);
@@ -17,7 +19,12 @@ function App() {
         return () => window.removeEventListener("resize", resetSorting);
     }, []);
 
-    return <Layout />;
+    return (
+        <>
+            <RouterProvider router={router} />
+            <LoginModal />
+        </>
+    );
 }
 
 export default App;
