@@ -33,8 +33,6 @@ export const useFetchingVideo = (monthPeriod: Period) => {
         queryKey: ["video", monthPeriod.yearAndMonth],
         queryFn: () =>
             getVideoMap(monthPeriod.startingDate, monthPeriod.endDate),
-        staleTime: Infinity,
-        gcTime: Infinity,
     });
 
     if (query.error) {

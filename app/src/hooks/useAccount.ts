@@ -12,8 +12,6 @@ const useAccount = () => {
                 return null;
             }
         },
-        staleTime: Infinity,
-        gcTime: Infinity,
     });
 
     if (query.error) {

@@ -14,6 +14,15 @@ import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import GlobalStyle from "./styles/GlobalStyle";
 
 const client = new QueryClient({
+    defaultOptions: {
+        queries: {
+            gcTime: 1000 * 10 * 6 * 10,
+            staleTime: 1000 * 10 * 6 * 10 * 3,
+        },
+        mutations: {
+            gcTime: 1000 * 10 * 6 * 10,
+        },
+    },
     queryCache: new QueryCache({
         onError: (error) => {
             console.error(error);
