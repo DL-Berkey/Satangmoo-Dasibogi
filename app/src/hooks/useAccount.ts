@@ -1,42 +1,35 @@
-import { useSetRecoilState } from "recoil";
+import { useQuery } from "@tanstack/react-query";
 import supabase from "@/supabaseConfig/client";
 
-import loginAtom from "@/recoil/loginAtom";
-
 const useAccount = () => {
-    const setLogin = useSetRecoilState(loginAtom);
+    const query = useQuery({
+        queryKey: ["userData"],
+        queryFn: () => supabase.auth.getSession(),
+        select: (value) => {
+            if (value.data.session) {
+                return value.data.session.user;
+            } else {
+                return null;
+            }
+        },
+        staleTime: Infinity,
+        gcTime: Infinity,
+    });
 
-    const updateLoginAtom = async () => {
-        const { data, error } = await supabase.auth.getSession();
-
-        if (error) {
-            throw error;
-        }
-
-        if (data !== null) {
-            setLogin(true);
-
-            return;
-        }
-
-        setLogin(false);
-    };
+    if (query.error) {
+        throw query.error;
+    }
 
     const login = async () => {
-        const { data, error } = await supabase.auth.signInWithOAuth({
+        const { error } = await supabase.auth.signInWithOAuth({
             provider: "google",
-            options: {
-                redirectTo: `${window.location.origin}/account/oauth`,
-            },
         });
 
         if (error) {
             throw error;
         }
 
-        console.log("data", data);
-
-        return data;
+        query.refetch();
     };
 
     const logout = async () => {
@@ -46,10 +39,10 @@ const useAccount = () => {
             throw error;
         }
 
-        setLogin(false);
+        query.refetch();
     };
 
-    return { updateLoginAtom, login, logout };
+    return { userDataQuery: query, login, logout };
 };
 
 export default useAccount;

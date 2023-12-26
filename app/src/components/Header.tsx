@@ -1,10 +1,9 @@
-import { useRecoilValue, useSetRecoilState } from "recoil";
+import { useSetRecoilState } from "recoil";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 
 import logoimg from "/togethertangmoo.png";
 
-import loginAtom from "@/recoil/loginAtom";
 import loginModalAtom from "@/recoil/loginModalAtom";
 import useAccount from "@/hooks/useAccount";
 import { gray, mainRed } from "@/styles/colors";
@@ -12,10 +11,10 @@ import { logo, mediumSize } from "@/styles/fontSize";
 import { headerMedia } from "@/styles/media";
 
 const Header = () => {
-    const isLogin = useRecoilValue(loginAtom);
     const setLoginModal = useSetRecoilState(loginModalAtom);
 
-    const { logout } = useAccount();
+    const { userDataQuery, logout } = useAccount();
+    const userData = userDataQuery.data;
 
     const onClick = () => {
         setLoginModal(true);
@@ -27,7 +26,7 @@ const Header = () => {
             <h1>사탕무 다시보기</h1>
             <Menu>
                 <ul>
-                    {isLogin ? (
+                    {userData !== null ? (
                         <li>
                             <button onClick={logout}>로그아웃</button>
                         </li>
