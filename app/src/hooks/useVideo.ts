@@ -1,4 +1,6 @@
 import { useSuspenseQuery } from "@tanstack/react-query";
+
+import { QUERY_KEY } from "@/constants/querykeys";
 import supabase from "@/supabaseConfig/client";
 
 const getVideoMap = async (startingDate: string, endDate: string) => {
@@ -30,7 +32,7 @@ const getVideoMap = async (startingDate: string, endDate: string) => {
 
 export const useFetchingVideo = (monthPeriod: Period) => {
     const query = useSuspenseQuery({
-        queryKey: ["video", monthPeriod.yearAndMonth],
+        queryKey: [QUERY_KEY.video, monthPeriod.yearAndMonth],
         queryFn: () =>
             getVideoMap(monthPeriod.startingDate, monthPeriod.endDate),
     });

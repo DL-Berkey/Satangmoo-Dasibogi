@@ -1,9 +1,11 @@
 import { useQuery } from "@tanstack/react-query";
+
+import { QUERY_KEY } from "@/constants/querykeys";
 import supabase from "@/supabaseConfig/client";
 
 const useAccount = () => {
     const query = useQuery({
-        queryKey: ["userData"],
+        queryKey: [QUERY_KEY.user_data],
         queryFn: () => supabase.auth.getSession(),
         select: (value) => {
             if (value.data.session) {
