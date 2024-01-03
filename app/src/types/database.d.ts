@@ -9,6 +9,42 @@ type Json =
 interface Database {
     public: {
         Tables: {
+            likes_video: {
+                Row: {
+                    created_at: string;
+                    id: number;
+                    user_id: string;
+                    video_id: string;
+                };
+                Insert: {
+                    created_at?: string;
+                    id?: number;
+                    user_id: string;
+                    video_id: string;
+                };
+                Update: {
+                    created_at?: string;
+                    id?: number;
+                    user_id?: string;
+                    video_id?: string;
+                };
+                Relationships: [
+                    {
+                        foreignKeyName: "likes_video_user_id_fkey";
+                        columns: ["user_id"];
+                        isOneToOne: false;
+                        referencedRelation: "users";
+                        referencedColumns: ["id"];
+                    },
+                    {
+                        foreignKeyName: "likes_video_video_id_fkey";
+                        columns: ["video_id"];
+                        isOneToOne: false;
+                        referencedRelation: "video";
+                        referencedColumns: ["videoId"];
+                    }
+                ];
+            };
             video: {
                 Row: {
                     created_at: string;
@@ -36,12 +72,55 @@ interface Database {
                 };
                 Relationships: [];
             };
+            watched_video: {
+                Row: {
+                    created_at: string;
+                    id: number;
+                    user_id: string;
+                    video_id: string;
+                };
+                Insert: {
+                    created_at?: string;
+                    id?: number;
+                    user_id: string;
+                    video_id: string;
+                };
+                Update: {
+                    created_at?: string;
+                    id?: number;
+                    user_id?: string;
+                    video_id?: string;
+                };
+                Relationships: [
+                    {
+                        foreignKeyName: "watched_video_user_id_fkey";
+                        columns: ["user_id"];
+                        isOneToOne: false;
+                        referencedRelation: "users";
+                        referencedColumns: ["id"];
+                    },
+                    {
+                        foreignKeyName: "watched_video_video_id_fkey";
+                        columns: ["video_id"];
+                        isOneToOne: false;
+                        referencedRelation: "video";
+                        referencedColumns: ["videoId"];
+                    }
+                ];
+            };
         };
         Views: {
             [_ in never]: never;
         };
         Functions: {
-            [_ in never]: never;
+            get_likes_video_by_user_id: {
+                Args: {
+                    user_id_input: string;
+                };
+                Returns: {
+                    video_ids: string[];
+                }[];
+            };
         };
         Enums: {
             [_ in never]: never;

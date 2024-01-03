@@ -3,10 +3,9 @@ import { useRecoilValue } from "recoil";
 import dayjs from "dayjs";
 import styled, { css } from "styled-components";
 
-import { FaHeart } from "react-icons/fa";
-
 import sortingAtom from "@/recoil/sortingAtom";
 import usePopup from "@/hooks/usePopup";
+import BookmarkButton from "./BookmarkButton";
 import { mainRed } from "@/styles/colors";
 import {
     cardInfoListMode,
@@ -38,12 +37,6 @@ const DateCard = ({ id, date, videoData }: Props) => {
         }
     };
 
-    const onClicklike = (e: MouseEvent) => {
-        e.stopPropagation();
-
-        // like logic...
-    };
-
     return (
         <Wrapper
             id={id}
@@ -57,11 +50,7 @@ const DateCard = ({ id, date, videoData }: Props) => {
                 $setTransparent={videoData?.thumbnails !== undefined}
             >
                 {sortingMode === "calendar" && <Date>{date + " 일"}</Date>}
-                {videoData && (
-                    <Like onClick={onClicklike}>
-                        <FaHeart />
-                    </Like>
-                )}
+                {videoData && <BookmarkButton videoData={videoData} />}
             </CardInfo>
 
             <Thumbnail
@@ -117,10 +106,6 @@ const CardInfo = styled.div<{ $setTransparent: boolean }>`
         css`
             color: white;
             background: rgba(0, 0, 0, 0.4);
-
-            & button svg {
-                fill: white;
-            }
         `}
 
     ${cardInfoListMode}
@@ -132,17 +117,6 @@ const Date = styled.span`
     width: fit-content;
 
     border-bottom: 2px solid ${mainRed};
-`;
-
-const Like = styled.button`
-    width: 30%;
-    height: 100%;
-
-    & svg {
-        float: right;
-
-        transform: scale(1.2);
-    }
 `;
 
 const Thumbnail = styled.div.attrs<{
