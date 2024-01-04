@@ -36,10 +36,10 @@ const Header = () => {
                         </li>
                     )}
                     <li>
-                        <Link to="/">시청기록</Link>
+                        <Link to="/">북마크</Link>
                     </li>
                     <li>
-                        <Link to="/">좋아요</Link>
+                        <Link to="/">기록</Link>
                     </li>
                 </ul>
             </Menu>
@@ -97,6 +97,10 @@ const Menu = styled.div`
 
     & ul li button {
         font-size: ${mediumSize};
+    }
+
+    & ul li a {
+        font-weight: normal;
     }
 `;
 
