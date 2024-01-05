@@ -1,33 +1,18 @@
 import { MouseEvent } from "react";
-import { useRecoilValue } from "recoil";
-import dayjs from "dayjs";
 import styled, { css } from "styled-components";
 
-import sortingAtom from "@/recoil/sortingAtom";
 import usePopup from "@/hooks/usePopup";
-import BookmarkButton from "./BookmarkButton";
+import BookmarkButton from "../BookmarkButton";
 import { mainRed } from "@/styles/colors";
-import {
-    cardInfoListMode,
-    dateCardListMode,
-    thumbnailListMode,
-} from "@/styles/listMode";
 import { cardInfoMedia, dateCardMedia } from "@/styles/media";
-import { defaultSize, mediumSize } from "@/styles/fontSize";
 
 interface Props {
-    id: string;
     date: string;
     videoData?: VideoData;
 }
 
-const DateCard = ({ id, date, videoData }: Props) => {
-    const sortingMode = useRecoilValue(sortingAtom);
-
-    const { registerPopup } = usePopup({
-        sortingMode,
-        visibleMode: "calendar",
-    });
+const CalendarCard = ({ date, videoData }: Props) => {
+    const { registerPopup } = usePopup();
 
     const onClick = (e: MouseEvent<HTMLDivElement>) => {
         const videoid = e.currentTarget.getAttribute("videoid");
@@ -39,35 +24,16 @@ const DateCard = ({ id, date, videoData }: Props) => {
 
     return (
         <Wrapper
-            id={id}
-            className={sortingMode}
             videoid={videoData?.videoId}
             onClick={onClick}
             {...registerPopup(videoData?.title)}
         >
-            <CardInfo
-                className={sortingMode}
-                $setTransparent={videoData?.thumbnails !== undefined}
-            >
-                {sortingMode === "calendar" && <Date>{date + " 일"}</Date>}
+            <CardInfo $setTransparent={videoData?.thumbnails !== undefined}>
+                <Date>{date + " 일"}</Date>
                 {videoData && <BookmarkButton videoData={videoData} />}
             </CardInfo>
 
-            <Thumbnail
-                className={sortingMode}
-                $thumbnail={videoData?.thumbnails.high.url}
-            />
-            {sortingMode === "list" && (
-                <Detail>
-                    <p>
-                        {videoData?.publishedAt !== undefined &&
-                            dayjs(videoData?.publishedAt).format(
-                                "YYYY년 MM월 D일"
-                            )}
-                    </p>
-                    <p>{videoData?.title}</p>
-                </Detail>
-            )}
+            <Thumbnail $thumbnail={videoData?.thumbnails.high.url} />
         </Wrapper>
     );
 };
@@ -82,8 +48,6 @@ const Wrapper = styled.div<{
     font-size: 1.2rem;
 
     background: white;
-
-    ${dateCardListMode}
 
     ${dateCardMedia}
 `;
@@ -108,8 +72,6 @@ const CardInfo = styled.div<{ $setTransparent: boolean }>`
             background: rgba(0, 0, 0, 0.4);
         `}
 
-    ${cardInfoListMode}
-        
     ${cardInfoMedia}
 `;
 
@@ -129,37 +91,12 @@ const Thumbnail = styled.div.attrs<{
             },
         };
     } else {
-        return {
-            style: {
-                background: "transparent",
-            },
-        };
+        return {};
     }
 })`
     width: 100%;
 
     aspect-ratio: 16 / 9;
-
-    ${thumbnailListMode}
 `;
 
-const Detail = styled.div`
-    flex: 1;
-
-    padding: 2%;
-
-    & :first-child {
-        width: fit-content;
-
-        margin-bottom: 4%;
-
-        font-size: ${mediumSize};
-
-        border-bottom: 2px solid ${mainRed};
-    }
-    & :last-child {
-        font-size: ${defaultSize};
-    }
-`;
-
-export default DateCard;
+export default CalendarCard;

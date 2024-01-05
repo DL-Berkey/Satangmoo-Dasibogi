@@ -8,9 +8,10 @@ import { mainRed } from "@/styles/colors";
 
 interface Props {
     videoData: VideoData;
+    className?: string;
 }
 
-const BookmarkButton = ({ videoData }: Props) => {
+const BookmarkButton = ({ videoData, className }: Props) => {
     const bookmark = useBookmark();
 
     const onClick = (e: MouseEvent<HTMLButtonElement>) => {
@@ -27,6 +28,7 @@ const BookmarkButton = ({ videoData }: Props) => {
         <>
             {bookmark.data && (
                 <Wrapper
+                    className={className}
                     $isBookmarked={bookmark.isBookmarkedVideo(
                         videoData.videoId
                     )}

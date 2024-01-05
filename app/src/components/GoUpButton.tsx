@@ -5,7 +5,6 @@ import { FaArrowUp } from "react-icons/fa";
 
 import sortingAtom from "@/recoil/sortingAtom";
 import { mainRed } from "@/styles/colors";
-import { goUpButtonListMode } from "@/styles/listMode";
 import { goUpButtonMedia } from "@/styles/media";
 
 const GoUpButton = () => {
@@ -16,9 +15,13 @@ const GoUpButton = () => {
     };
 
     return (
-        <Wrapper className={sortingMode} onClick={onClickGoUpButton}>
-            <FaArrowUp />
-        </Wrapper>
+        <>
+            {sortingMode === "list" && (
+                <Wrapper onClick={onClickGoUpButton}>
+                    <FaArrowUp />
+                </Wrapper>
+            )}
+        </>
     );
 };
 
@@ -28,7 +31,7 @@ const Wrapper = styled.button`
     bottom: 6%;
     right: 20%;
 
-    display: none;
+    display: block;
 
     height: 5%;
 
@@ -44,8 +47,6 @@ const Wrapper = styled.button`
 
         transform: scale(2);
     }
-
-    ${goUpButtonListMode}
 
     ${goUpButtonMedia}
 `;

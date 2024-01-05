@@ -1,17 +1,12 @@
-import { useRecoilValue } from "recoil";
 import styled from "styled-components";
 
-import sortingAtom from "@/recoil/sortingAtom";
 import image from "@/assets/sadtangmoo.png";
 import { bigSize } from "@/styles/fontSize";
 import { emptyPageMedia } from "@/styles/media";
-import { emptyPageListMode } from "@/styles/listMode";
 
 const EmptyPage = () => {
-    const sortingMode = useRecoilValue(sortingAtom);
-
     return (
-        <Wrapper className={sortingMode}>
+        <Wrapper>
             <Image src={image} />
             <Message>다시보기가 없습니다...</Message>
         </Wrapper>
@@ -19,12 +14,10 @@ const EmptyPage = () => {
 };
 
 const Wrapper = styled.div`
-    display: none;
+    display: grid;
     place-content: center;
 
     height: 83vh;
-
-    ${emptyPageListMode}
 
     ${emptyPageMedia}
 `;

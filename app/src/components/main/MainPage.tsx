@@ -1,13 +1,16 @@
 import { useState, Suspense } from "react";
 import dayjs from "dayjs";
+import { useRecoilValue } from "recoil";
 import styled from "styled-components";
 
+import sortingAtom from "@/recoil/sortingAtom";
 import createMonthData from "@/utils/createMonthData";
 import CalendarNavigation from "./CalendarNavigation";
 import ErrorBoundary from "../error/ErrorBoundary";
 import Loading from "../Loading";
 import DayOfWeekCardContainer from "./DayOfWeekCardContainer";
-import DateCardContainer from "./DateCardContainer";
+import CalendarCardContainer from "./calendarMode/CalendarCardContainer";
+import ListCardContainer from "./listMode/ListCardContainer";
 import GoUpButton from "../GoUpButton";
 import Popup from "../Popup";
 import { gray2 } from "@/styles/colors";
@@ -22,8 +25,10 @@ const DAY_OF_WEEK_MAP: Record<DAY_OF_WEEK, string> = {
     saturday: "토요일",
 } as const;
 
-const Calendar = () => {
+const MainPage = () => {
     const [current, setCurrent] = useState(dayjs());
+
+    const sortingMode = useRecoilValue(sortingAtom);
 
     // day of week: 요일, date: 일
     // 일요일: 0, 토요일: 6
@@ -41,9 +46,13 @@ const Calendar = () => {
         .endOf("month")
         .date();
 
-    const prevYearAndMonth = current.subtract(1, "month").format("YYYY-MM");
-    const currentYearAndMonth = current.format("YYYY-MM");
-    const nextYearAndMonth = current.add(1, "month").format("YYYY-MM");
+    const prevYearAndMonth = current
+        .subtract(1, "month")
+        .format("YYYY-MM") as YearAndMonth;
+    const currentYearAndMonth = current.format("YYYY-MM") as YearAndMonth;
+    const nextYearAndMonth = current
+        .add(1, "month")
+        .format("YYYY-MM") as YearAndMonth;
 
     const calendarData = createMonthData(
         startingDayOfWeek,
@@ -77,12 +86,21 @@ const Calendar = () => {
                 />
                 <DayOfWeekCardContainer dayOfWeekMap={DAY_OF_WEEK_MAP} />
                 <Suspense fallback={<Loading />}>
-                    <DateCardContainer
-                        prevYearAndMonth={prevYearAndMonth}
-                        currentYearAndMonth={currentYearAndMonth}
-                        nextYearAndMonth={nextYearAndMonth}
-                        calendarData={calendarData}
-                    />
+                    {sortingMode === "calendar" ? (
+                        <CalendarCardContainer
+                            prevYearAndMonth={prevYearAndMonth}
+                            currentYearAndMonth={currentYearAndMonth}
+                            nextYearAndMonth={nextYearAndMonth}
+                            calendarData={calendarData}
+                        />
+                    ) : (
+                        <ListCardContainer
+                            prevYearAndMonth={prevYearAndMonth}
+                            currentYearAndMonth={currentYearAndMonth}
+                            nextYearAndMonth={nextYearAndMonth}
+                            calendarData={calendarData}
+                        />
+                    )}
                 </Suspense>
             </ErrorBoundary>
             <GoUpButton />
@@ -95,4 +113,4 @@ const Wrapper = styled.section`
     border-bottom: 3px solid ${gray2};
 `;
 
-export default Calendar;
+export default MainPage;

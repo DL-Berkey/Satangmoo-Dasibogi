@@ -12,6 +12,9 @@ const getEndDate = (yearAndMonth: string) => {
     return result;
 };
 
+/**
+ * 특정 달의 시작일과 종료일을 만들어주는 함수
+ */
 const createMonthPeriod = ({
     currentYearAndMonth,
     prevYearAndMonth,
