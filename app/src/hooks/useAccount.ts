@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 
-import { QUERY_KEY } from "@/constants/querykeys";
+import { QUERY_KEY } from "@/constants/queryKeys";
 import supabase from "@/supabaseConfig/client";
 
 const useAccount = () => {

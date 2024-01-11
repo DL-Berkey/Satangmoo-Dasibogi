@@ -1,5 +1,8 @@
+import { useRecoilValue } from "recoil";
 import styled from "styled-components";
 
+import showBookmarkedOnlyAtom from "@/recoil/showBookmarkedOnlyAtom";
+import useBookmark from "@/hooks/bookmark/useBookmark";
 import { useFetchingAllVideo } from "@/hooks/useVideo";
 import createMonthPeriod from "@/utils/createMonthPeriod";
 import ListCard from "./ListCard";
@@ -19,6 +22,10 @@ const ListCardContainer = ({
     nextYearAndMonth,
     calendarData,
 }: Props) => {
+    const showBookmarkedOnly = useRecoilValue(showBookmarkedOnlyAtom);
+
+    const { data } = useBookmark();
+
     const query = useFetchingAllVideo(
         createMonthPeriod({
             currentYearAndMonth,
@@ -31,7 +38,7 @@ const ListCardContainer = ({
 
     return (
         <Wrapper>
-            {calendarData[currentYearAndMonth].map((value) => {
+            {[...calendarData[currentYearAndMonth]].reverse().map((value) => {
                 let videoData = currentMonthQuery.data.get(
                     currentYearAndMonth +
                         "-" +
@@ -39,6 +46,14 @@ const ListCardContainer = ({
                 );
 
                 if (videoData === undefined) {
+                    return null;
+                }
+
+                if (
+                    showBookmarkedOnly === "show" &&
+                    data &&
+                    data.includes(videoData.videoId) === false
+                ) {
                     return null;
                 }
 

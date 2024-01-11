@@ -1,14 +1,14 @@
 import { useState, useEffect, ChangeEvent } from "react";
+import { useRecoilState } from "recoil";
 import { Dayjs } from "dayjs";
 import styled, { css } from "styled-components";
-
-import { useRecoilState } from "recoil";
 
 import { GrPrevious, GrNext } from "react-icons/gr";
 import { FaRegCalendarAlt, FaRegListAlt } from "react-icons/fa";
 
 import sortingAtom from "@/recoil/sortingAtom";
 import usePopup from "@/hooks/usePopup";
+import ShowBookmarkedOnlyVideo from "./ShowBookmarkedOnlyVideo";
 import { bigSize, defaultSize } from "@/styles/fontSize";
 import { gray, mainRed } from "@/styles/colors";
 import {
@@ -91,6 +91,9 @@ const CalendarNavigation = ({
             >
                 {current.format("YYYY년 MM월")}
             </h2>
+            <NavigateMonthButton onClick={goNextMonth}>
+                <GrNext />
+            </NavigateMonthButton>
             {isVisibleDatePicker && (
                 <DatePicker
                     type="month"
@@ -98,9 +101,8 @@ const CalendarNavigation = ({
                     onChange={onChangeDatePicker}
                 />
             )}
-            <NavigateMonthButton onClick={goNextMonth}>
-                <GrNext />
-            </NavigateMonthButton>
+
+            <ShowBookmarkedOnlyVideo />
         </Wrapper>
     );
 };
