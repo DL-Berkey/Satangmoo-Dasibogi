@@ -26,80 +26,18 @@ const DAY_OF_WEEK_MAP: Record<DAY_OF_WEEK, string> = {
 } as const;
 
 const MainPage = () => {
-    const [current, setCurrent] = useState(dayjs());
-
     const sortingMode = useRecoilValue(sortingAtom);
-
-    // day of week: 요일, date: 일
-    // 일요일: 0, 토요일: 6
-    // 이번 달의 시작하는 요일
-    const firstDayOfMonth = current.startOf("month");
-    const startingDayOfWeek = firstDayOfMonth.day();
-
-    // 이번 달의 마지막 일
-    const endDateOfMonth = current.endOf("month");
-    const endDate = endDateOfMonth.date();
-
-    // 저번 달의 마지막 일
-    const endDateOfLastMonth = current
-        .subtract(1, "month")
-        .endOf("month")
-        .date();
-
-    const prevYearAndMonth = current
-        .subtract(1, "month")
-        .format("YYYY-MM") as YearAndMonth;
-    const currentYearAndMonth = current.format("YYYY-MM") as YearAndMonth;
-    const nextYearAndMonth = current
-        .add(1, "month")
-        .format("YYYY-MM") as YearAndMonth;
-
-    const calendarData = createMonthData(
-        startingDayOfWeek,
-        endDate,
-        endDateOfLastMonth,
-        currentYearAndMonth,
-        prevYearAndMonth,
-        nextYearAndMonth
-    );
-
-    const changeCurrent = (date: Date) => {
-        setCurrent(dayjs(date));
-    };
-
-    const goPrevMonth = () => {
-        setCurrent((prev) => prev.subtract(1, "month"));
-    };
-
-    const goNextMonth = () => {
-        setCurrent((prev) => prev.add(1, "month"));
-    };
 
     return (
         <Wrapper>
             <ErrorBoundary>
-                <CalendarNavigation
-                    current={current}
-                    changeCurrent={changeCurrent}
-                    goPrevMonth={goPrevMonth}
-                    goNextMonth={goNextMonth}
-                />
+                <CalendarNavigation />
                 <DayOfWeekCardContainer dayOfWeekMap={DAY_OF_WEEK_MAP} />
                 <Suspense fallback={<Loading />}>
                     {sortingMode === "calendar" ? (
-                        <CalendarCardContainer
-                            prevYearAndMonth={prevYearAndMonth}
-                            currentYearAndMonth={currentYearAndMonth}
-                            nextYearAndMonth={nextYearAndMonth}
-                            calendarData={calendarData}
-                        />
+                        <CalendarCardContainer />
                     ) : (
-                        <ListCardContainer
-                            prevYearAndMonth={prevYearAndMonth}
-                            currentYearAndMonth={currentYearAndMonth}
-                            nextYearAndMonth={nextYearAndMonth}
-                            calendarData={calendarData}
-                        />
+                        <ListCardContainer />
                     )}
                 </Suspense>
             </ErrorBoundary>

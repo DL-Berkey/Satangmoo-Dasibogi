@@ -6,6 +6,7 @@ import styled, { css } from "styled-components";
 import { GrPrevious, GrNext } from "react-icons/gr";
 import { FaRegCalendarAlt, FaRegListAlt } from "react-icons/fa";
 
+import useCalendar from "@/hooks/useCalendar";
 import sortingAtom from "@/recoil/sortingAtom";
 import usePopup from "@/hooks/usePopup";
 import ShowBookmarkedOnlyVideo from "./ShowBookmarkedOnlyVideo";
@@ -17,31 +18,22 @@ import {
     sortingMenuMedia,
 } from "@/styles/media";
 
-interface Props {
-    current: Dayjs;
-    changeCurrent(date: Date): void;
-    goPrevMonth(): void;
-    goNextMonth(): void;
-}
+const CalendarNavigation = () => {
+    const { date, changeCurrentMonth, goPrevMonth, goNextMonth } =
+        useCalendar();
 
-const CalendarNavigation = ({
-    current,
-    changeCurrent,
-    goPrevMonth,
-    goNextMonth,
-}: Props) => {
     const [isVisibleDatePicker, setIsDatePicker] = useState(false);
 
     const [sortingMode, setSortingMode] = useRecoilState(sortingAtom);
 
     const { registerPopup } = usePopup();
 
-    // current가 변경 되었을 때 date picker가 켜져 있다면 꺼줌
-    useEffect(() => {
-        if (isVisibleDatePicker) {
-            setIsDatePicker(false);
-        }
-    }, [current]);
+    // date가 변경 되었을 때 date picker가 켜져 있다면 꺼줌
+    // useEffect(() => {
+    //     if (isVisibleDatePicker) {
+    //         setIsDatePicker(false);
+    //     }
+    // }, [date]);
 
     const onClickSortingButton = () => {
         setSortingMode((prev) => (prev === "calendar" ? "list" : "calendar"));
@@ -58,7 +50,7 @@ const CalendarNavigation = ({
             return;
         }
 
-        changeCurrent(date);
+        changeCurrentMonth(date);
         setIsDatePicker((prev) => !prev);
     };
 
@@ -89,7 +81,7 @@ const CalendarNavigation = ({
                     "여기를 클릭하면 원하는 달로 바로 가실 수 있습니다."
                 )}
             >
-                {current.format("YYYY년 MM월")}
+                {date.format("YYYY년 MM월")}
             </h2>
             <NavigateMonthButton onClick={goNextMonth}>
                 <GrNext />
@@ -97,7 +89,7 @@ const CalendarNavigation = ({
             {isVisibleDatePicker && (
                 <DatePicker
                     type="month"
-                    value={current.format("YYYY-MM")}
+                    value={date.format("YYYY-MM")}
                     onChange={onChangeDatePicker}
                 />
             )}
