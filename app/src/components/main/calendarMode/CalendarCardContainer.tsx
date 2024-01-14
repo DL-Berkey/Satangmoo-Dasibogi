@@ -2,6 +2,7 @@ import styled from "styled-components";
 
 import { useFetchingAllVideo } from "@/hooks/useVideo";
 
+import createFullDate from "@/utils/createFullDate";
 import useCalendar from "@/hooks/useCalendar";
 import createMonthPeriod from "@/utils/createMonthPeriod";
 import CalendarCard from "./CalendarCard";
@@ -16,13 +17,13 @@ const getDataCardArray = (params: {
     const { yearAndMonth, dateArray, mappedVideoData } = params;
 
     return dateArray.map((value) => {
-        let videoData = mappedVideoData.get(
-            yearAndMonth + "-" + value.toString().padStart(2, "0")
-        );
+        const fullDate = createFullDate(yearAndMonth, value);
+
+        let videoData = mappedVideoData.get(fullDate);
 
         return (
             <CalendarCard
-                key={yearAndMonth + String(value)}
+                key={fullDate}
                 date={String(value)}
                 videoData={videoData}
             />
