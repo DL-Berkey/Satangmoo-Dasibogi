@@ -1,12 +1,12 @@
 import dayjs from "dayjs";
 
-const getStartingDate = (yearAndMonth: string) => {
+export const getStartingDate = (yearAndMonth: YearAndMonth) => {
     const result = dayjs(yearAndMonth).startOf("month").format("YYYY-MM-DD");
 
     return result;
 };
 
-const getEndDate = (yearAndMonth: string) => {
+export const getEndDate = (yearAndMonth: YearAndMonth) => {
     const result = dayjs(yearAndMonth).endOf("month").format("YYYY-MM-DD");
 
     return result;
@@ -20,9 +20,9 @@ const createMonthPeriod = ({
     prevYearAndMonth,
     nextYearAndMonth,
 }: {
-    currentYearAndMonth: string;
-    prevYearAndMonth: string;
-    nextYearAndMonth: string;
+    currentYearAndMonth: YearAndMonth;
+    prevYearAndMonth: YearAndMonth;
+    nextYearAndMonth: YearAndMonth;
 }) => {
     const currentMonthStartingDate = getStartingDate(currentYearAndMonth);
     const currentMonthEndDate = getEndDate(currentYearAndMonth);

@@ -6,8 +6,6 @@ import createMonthData from "@/utils/createMonthData";
 
 // TODO: refactor variable name
 const useCalendar = () => {
-    // const [date, setDate] = useState(dayjs());
-
     const [date, setDate] = useRecoilState(dateAtom);
 
     // day of week: 요일, date: 일
@@ -52,6 +50,10 @@ const useCalendar = () => {
         setDate((prev) => prev.add(1, "month"));
     };
 
+    const isCurrentMonth = (month: YearAndMonth | FullDate) => {
+        return date.isSame(month, "month");
+    };
+
     const yearAndMonth = {
         prevYearAndMonth,
         currentYearAndMonth,
@@ -64,6 +66,7 @@ const useCalendar = () => {
         changeCurrentMonth,
         goPrevMonth,
         goNextMonth,
+        isCurrentMonth,
         yearAndMonth,
     };
 };

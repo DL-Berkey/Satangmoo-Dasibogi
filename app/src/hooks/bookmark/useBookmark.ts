@@ -1,32 +1,46 @@
+import useCalendar from "../useCalendar";
 import useAccount from "../useAccount";
 import useBookmarkQuery from "./useBookmarkQuery";
 import useBookmarkMutation from "./useBookmarkMutation";
 
 const useBookmark = () => {
+    const {
+        yearAndMonth: { currentYearAndMonth },
+    } = useCalendar();
+
     const { userDataQuery } = useAccount();
     const userId = userDataQuery.data ? userDataQuery.data.id : null;
 
-    const query = useBookmarkQuery(userId);
+    const query = useBookmarkQuery(userId, currentYearAndMonth);
 
-    const isBookmarkedVideo = (videoId: string) => {
+    const isBookmarkVideo = (videoData: VideoData) => {
         if (!query.data) {
             return false;
         }
 
-        return query.data.includes(videoId);
+        const bookmarkVideoData = query.data.has(videoData.publishedAt);
+
+        if (!bookmarkVideoData) {
+            return false;
+        }
+
+        return true;
     };
 
-    const mutation = useBookmarkMutation(userId);
+    const mutation = useBookmarkMutation(userId, currentYearAndMonth);
 
     const updateBookmark = async (
-        videoId: string,
+        videoData: VideoData,
         action?: "add" | "remove"
     ) => {
         if (!action) {
-            action = isBookmarkedVideo(videoId) ? "remove" : "add";
+            action = isBookmarkVideo(videoData) ? "remove" : "add";
         }
 
-        const result = await mutation.mutateAsync({ action, videoId });
+        const result = await mutation.mutateAsync({
+            action,
+            videoData,
+        });
 
         return result;
     };
@@ -36,7 +50,7 @@ const useBookmark = () => {
         updateBookmark,
         query,
         mutation,
-        isBookmarkedVideo,
+        isBookmarkVideo,
     };
 };
 

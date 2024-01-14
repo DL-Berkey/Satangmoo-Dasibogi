@@ -3,7 +3,9 @@ import styled, { css } from "styled-components";
 
 import { FaBookmark } from "react-icons/fa";
 
+import useAccount from "@/hooks/useAccount";
 import useBookmark from "@/hooks/bookmark/useBookmark";
+import useCalendar from "@/hooks/useCalendar";
 import { mainRed } from "@/styles/colors";
 
 interface Props {
@@ -12,7 +14,11 @@ interface Props {
 }
 
 const BookmarkButton = ({ videoData, className }: Props) => {
+    const { isLogin } = useAccount();
+
     const bookmark = useBookmark();
+
+    const { isCurrentMonth } = useCalendar();
 
     const onClick = (e: MouseEvent<HTMLButtonElement>) => {
         e.stopPropagation();
@@ -20,18 +26,16 @@ const BookmarkButton = ({ videoData, className }: Props) => {
         const videoId = e.currentTarget.getAttribute("videoid");
 
         if (bookmark && videoId) {
-            bookmark.updateBookmark(videoId);
+            bookmark.updateBookmark(videoData);
         }
     };
 
     return (
         <>
-            {bookmark.data && (
+            {isLogin() && isCurrentMonth(videoData.publishedAt as FullDate) && (
                 <Wrapper
                     className={className}
-                    $isBookmarked={bookmark.isBookmarkedVideo(
-                        videoData.videoId
-                    )}
+                    $isBookmarked={bookmark.isBookmarkVideo(videoData)}
                     videoid={videoData.videoId}
                     onClick={onClick}
                 >

@@ -30,22 +30,20 @@ const createMonthData = (
             return day++;
         });
 
-    const calendarData: CalendarData = {};
+    // TODO: Map 객체로 변경!
+    const monthData: MonthData = {};
 
     if (prevYearAndMonth) {
-        calendarData[prevYearAndMonth] = dateArray.splice(0, startingDayOfWeek);
+        monthData[prevYearAndMonth] = dateArray.splice(0, startingDayOfWeek);
     }
 
-    calendarData[currentYearAndMonth] = dateArray.splice(
-        0,
-        endDateOfCurrentMonth
-    );
+    monthData[currentYearAndMonth] = dateArray.splice(0, endDateOfCurrentMonth);
 
     if (nextYearAndMonth) {
-        calendarData[nextYearAndMonth] = [...dateArray];
+        monthData[nextYearAndMonth] = [...dateArray];
     }
 
-    return calendarData;
+    return monthData;
 };
 
 export default createMonthData;

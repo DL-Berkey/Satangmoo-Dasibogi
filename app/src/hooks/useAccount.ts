@@ -42,7 +42,11 @@ const useAccount = () => {
         query.refetch();
     };
 
-    return { userDataQuery: query, login, logout };
+    const isLogin = () => {
+        return Boolean(query.data);
+    };
+
+    return { userDataQuery: query, login, logout, isLogin };
 };
 
 export default useAccount;

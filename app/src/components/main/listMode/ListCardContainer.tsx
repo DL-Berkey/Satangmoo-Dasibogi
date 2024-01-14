@@ -1,30 +1,29 @@
 import { useRecoilValue } from "recoil";
 import styled from "styled-components";
 
+import useCalendar from "@/hooks/useCalendar";
 import showBookmarkedOnlyAtom from "@/recoil/showBookmarkedOnlyAtom";
 import useBookmark from "@/hooks/bookmark/useBookmark";
 import { useFetchingAllVideo } from "@/hooks/useVideo";
 import createMonthPeriod from "@/utils/createMonthPeriod";
+import createFullDate from "@/utils/createFullDate";
 import ListCard from "./ListCard";
 import EmptyPage from "../../EmptyPage";
 import { gray2 } from "@/styles/colors";
 
-interface Props {
-    prevYearAndMonth: YearAndMonth;
-    currentYearAndMonth: YearAndMonth;
-    nextYearAndMonth: YearAndMonth;
-    calendarData: CalendarData;
-}
+const ListCardContainer = () => {
+    const {
+        monthData,
+        yearAndMonth: {
+            prevYearAndMonth,
+            currentYearAndMonth,
+            nextYearAndMonth,
+        },
+    } = useCalendar();
 
-const ListCardContainer = ({
-    prevYearAndMonth,
-    currentYearAndMonth,
-    nextYearAndMonth,
-    calendarData,
-}: Props) => {
     const showBookmarkedOnly = useRecoilValue(showBookmarkedOnlyAtom);
 
-    const { data } = useBookmark();
+    const { data, isBookmarkVideo } = useBookmark();
 
     const query = useFetchingAllVideo(
         createMonthPeriod({
@@ -36,14 +35,16 @@ const ListCardContainer = ({
 
     const { currentMonthQuery } = query;
 
+    const isEmpty =
+        currentMonthQuery.data.size === 0 ||
+        (showBookmarkedOnly === "show" && data && !(data.size > 0));
+
     return (
         <Wrapper>
-            {[...calendarData[currentYearAndMonth]].reverse().map((value) => {
-                let videoData = currentMonthQuery.data.get(
-                    currentYearAndMonth +
-                        "-" +
-                        value.toString().padStart(2, "0")
-                );
+            {[...monthData[currentYearAndMonth]].reverse().map((value) => {
+                const fullDate = createFullDate(currentYearAndMonth, value);
+
+                let videoData = currentMonthQuery.data.get(fullDate);
 
                 if (videoData === undefined) {
                     return null;
@@ -51,16 +52,15 @@ const ListCardContainer = ({
 
                 if (
                     showBookmarkedOnly === "show" &&
-                    data &&
-                    data.includes(videoData.videoId) === false
+                    !isBookmarkVideo(videoData)
                 ) {
                     return null;
                 }
 
-                return <ListCard key={value} videoData={videoData} />;
+                return <ListCard key={fullDate} videoData={videoData} />;
             })}
-            {/* 목록으로 보기에서 다시보기 영상이 없을 때 띄우는 페이지 */}
-            {currentMonthQuery.data.size === 0 && <EmptyPage />}
+            {/* 목록으로 보기에서 다시보기 영상이 없거나, 북마크한 영상이 없을 때 띄우는 페이지 */}
+            {isEmpty && <EmptyPage />}
         </Wrapper>
     );
 };
@@ -68,6 +68,7 @@ const ListCardContainer = ({
 const Wrapper = styled.div`
     display: block;
     width: 60%;
+    min-height: 83vh;
     height: fit-content;
 
     margin: 0 auto;
