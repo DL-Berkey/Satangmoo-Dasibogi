@@ -1,21 +1,8 @@
 import dayjs from "dayjs";
 
-export const getStartingDate = (yearAndMonth: YearAndMonth) => {
-    const result = dayjs(yearAndMonth).startOf("month").format("YYYY-MM-DD");
+type GetFullDate = (yearAndMonth: YearAndMonth) => FullDate;
 
-    return result;
-};
-
-export const getEndDate = (yearAndMonth: YearAndMonth) => {
-    const result = dayjs(yearAndMonth).endOf("month").format("YYYY-MM-DD");
-
-    return result;
-};
-
-/**
- * 특정 달의 시작일과 종료일을 만들어주는 함수
- */
-const createMonthPeriod = ({
+type CreateMonthPeriod = ({
     currentYearAndMonth,
     prevYearAndMonth,
     nextYearAndMonth,
@@ -23,31 +10,55 @@ const createMonthPeriod = ({
     currentYearAndMonth: YearAndMonth;
     prevYearAndMonth: YearAndMonth;
     nextYearAndMonth: YearAndMonth;
+}) => Record<
+    "currentMonthPeriod" | "prevMonthPeriod" | "nextMonthPeriod",
+    MonthPeriod
+>;
+
+export const getStartingFullDate: GetFullDate = (yearAndMonth) => {
+    const result = dayjs(yearAndMonth).startOf("month").format("YYYY-MM-DD");
+
+    return result as FullDate;
+};
+
+export const getEndFullDate: GetFullDate = (yearAndMonth) => {
+    const result = dayjs(yearAndMonth).endOf("month").format("YYYY-MM-DD");
+
+    return result as FullDate;
+};
+
+/**
+ * 특정 달의 시작일과 종료일을 만들어주는 함수
+ */
+const createMonthPeriod: CreateMonthPeriod = ({
+    currentYearAndMonth,
+    prevYearAndMonth,
+    nextYearAndMonth,
 }) => {
-    const currentMonthStartingDate = getStartingDate(currentYearAndMonth);
-    const currentMonthEndDate = getEndDate(currentYearAndMonth);
+    const currentMonthStartingDate = getStartingFullDate(currentYearAndMonth);
+    const currentMonthEndDate = getEndFullDate(currentYearAndMonth);
 
-    const prevMonthStartingDate = getStartingDate(prevYearAndMonth);
-    const prevMonthEndDate = getEndDate(prevYearAndMonth);
+    const prevMonthStartingDate = getStartingFullDate(prevYearAndMonth);
+    const prevMonthEndDate = getEndFullDate(prevYearAndMonth);
 
-    const nextMonthStartingDate = getStartingDate(nextYearAndMonth);
-    const nextMonthEndDate = getEndDate(nextYearAndMonth);
+    const nextMonthStartingDate = getStartingFullDate(nextYearAndMonth);
+    const nextMonthEndDate = getEndFullDate(nextYearAndMonth);
 
     return {
         currentMonthPeriod: {
             yearAndMonth: currentYearAndMonth,
-            startingDate: currentMonthStartingDate,
-            endDate: currentMonthEndDate,
+            startingFullDate: currentMonthStartingDate,
+            endFullDate: currentMonthEndDate,
         },
         prevMonthPeriod: {
             yearAndMonth: prevYearAndMonth,
-            startingDate: prevMonthStartingDate,
-            endDate: prevMonthEndDate,
+            startingFullDate: prevMonthStartingDate,
+            endFullDate: prevMonthEndDate,
         },
         nextMonthPeriod: {
             yearAndMonth: nextYearAndMonth,
-            startingDate: nextMonthStartingDate,
-            endDate: nextMonthEndDate,
+            startingFullDate: nextMonthStartingDate,
+            endFullDate: nextMonthEndDate,
         },
     };
 };
