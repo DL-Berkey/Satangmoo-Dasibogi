@@ -1,7 +1,7 @@
 import useCalendar from "../useCalendar";
 import useAccount from "../useAccount";
 import useBookmarkQuery from "./useBookmarkQuery";
-import useBookmarkMutation from "./useBookmarkMutation";
+import { useAddingBookmark, useRemovingBookmark } from "./useBookmarkMutation";
 
 const useBookmark = () => {
     const {
@@ -18,7 +18,9 @@ const useBookmark = () => {
             return false;
         }
 
-        const bookmarkVideoData = query.data.has(videoData.publishedAt);
+        const bookmarkVideoData = query.data.has(
+            videoData.publishedAt as FullDate
+        );
 
         if (!bookmarkVideoData) {
             return false;
@@ -27,29 +29,40 @@ const useBookmark = () => {
         return true;
     };
 
-    const mutation = useBookmarkMutation(userId, currentYearAndMonth);
+    const addingMutation = useAddingBookmark();
+    const removingMutation = useRemovingBookmark();
 
     const updateBookmark = async (
         videoData: VideoData,
         action?: "add" | "remove"
     ) => {
+        if (!userId) {
+            return;
+        }
+
         if (!action) {
             action = isBookmarkVideo(videoData) ? "remove" : "add";
         }
 
-        const result = await mutation.mutateAsync({
-            action,
-            videoData,
-        });
-
-        return result;
+        if (action === "add") {
+            await addingMutation.mutateAsync({
+                userId,
+                videoData,
+                yearAndMonth: currentYearAndMonth,
+            });
+        } else {
+            await removingMutation.mutateAsync({
+                userId,
+                videoData,
+                yearAndMonth: currentYearAndMonth,
+            });
+        }
     };
 
     return {
+        query,
         data: query.data,
         updateBookmark,
-        query,
-        mutation,
         isBookmarkVideo,
     };
 };

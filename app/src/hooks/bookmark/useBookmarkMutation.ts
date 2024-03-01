@@ -3,6 +3,12 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { MUTATION_KEY, QUERY_KEY } from "@/constants/queryKeys";
 import supabase from "@/supabaseConfig/client";
 
+interface MutationParams {
+    userId: string;
+    yearAndMonth: YearAndMonth;
+    videoData: VideoData;
+}
+
 // TODO: supabase의 테이블명 및 funtions 이름 변경
 // supabase의 likes_video 테이블에 사용자가 좋아요한 영상의 video id를 추가하는 함수
 const addBookmarkVideo = async (userId: string | null, videoId: string) => {
@@ -48,99 +54,70 @@ const removeBookmarkVideo = async (userId: string | null, videoId: string) => {
     return data;
 };
 
-//TODO: yearAndMonthDate 를 다른 적절한 이름으로 수정
-const useBookmarkMutation = (
-    userId: string | null,
-    yearAndMonth: YearAndMonth
-) => {
-    // optimistic update를 위한 캐시 조작을 위한 queryclient
+export const useAddingBookmark = () => {
     const queryClient = useQueryClient();
 
-    const updateBookmarkVideoQuery = ({
-        previousCalendarData,
-        action,
-        videoData,
-    }: {
-        previousCalendarData: Map<FullDate, VideoData>;
-        action: "add" | "remove";
-        videoData: VideoData;
-    }) => {
-        const date = videoData.publishedAt as FullDate;
-
-        const newCalendarData = new Map(previousCalendarData.entries());
-
-        if (action === "add") {
-            newCalendarData.set(date, videoData);
-
-            queryClient.setQueryData(
-                [QUERY_KEY.bookmark_video, userId, yearAndMonth],
-
-                newCalendarData
-            );
-        } else {
-            newCalendarData.delete(date);
-
-            queryClient.setQueryData(
-                [QUERY_KEY.bookmark_video, userId, yearAndMonth],
-                newCalendarData
-            );
-        }
-    };
-
     const mutation = useMutation({
-        mutationKey: [MUTATION_KEY.on_bookmarking],
-        mutationFn: ({
-            action,
-            videoData,
-        }: {
-            action: "add" | "remove";
-            videoData: VideoData;
-        }) => {
+        mutationKey: [MUTATION_KEY.adding_bookmark],
+        mutationFn: ({ userId, videoData }: MutationParams) => {
             const videoId = videoData.videoId;
 
-            if (action === "add") {
-                return addBookmarkVideo(userId, videoId);
-            }
-            return removeBookmarkVideo(userId, videoId);
+            return addBookmarkVideo(userId, videoId);
         },
-        onMutate: async ({ action, videoData }) => {
+        onMutate: async ({ userId, yearAndMonth, videoData }) => {
+            // 캐시된 bookmark video data의 query를 취소
             await queryClient.cancelQueries({
                 queryKey: [QUERY_KEY.bookmark_video, userId, yearAndMonth],
             });
 
-            const previousCalendarData = queryClient.getQueryData<
-                Map<FullDate, VideoData>
-            >([QUERY_KEY.bookmark_video, userId, yearAndMonth]);
+            // 캐시된 bookmark video를 가져옴
+            const previousBookmarks = queryClient.getQueryData<MonthlyVideo>([
+                QUERY_KEY.bookmark_video,
+                userId,
+                yearAndMonth,
+            ]);
 
-            if (!previousCalendarData) {
+            if (!previousBookmarks) {
                 return;
             }
 
-            updateBookmarkVideoQuery({
-                previousCalendarData,
-                action,
-                videoData,
-            });
+            // 유저가 추가적으로 북마크한 video data를 추가한 새로운 bookmark video data를 만들어서 기존의 bookmark query에 등록
+            const fullDate = videoData.publishedAt as FullDate;
 
-            return { previousCalendarData };
+            const newBookmarks = new Map(previousBookmarks.entries());
+
+            newBookmarks.set(fullDate, videoData);
+
+            queryClient.setQueryData(
+                [QUERY_KEY.bookmark_video, userId, yearAndMonth],
+
+                newBookmarks
+            );
+
+            return { previousBookmarks };
         },
 
-        onError: (error, _, context) => {
+        onError: (error, variables, context) => {
             console.error(error);
 
             if (!context) {
                 return;
             }
 
-            const { previousCalendarData } = context;
+            const { userId, yearAndMonth } = variables;
 
+            const { previousBookmarks } = context;
+
+            // mutate 실패시(서버의 데이터 변경이 실패) 원래의 bookmark video data로 bookmark query를 변경
             queryClient.setQueryData(
                 [QUERY_KEY.bookmark_video, userId, yearAndMonth],
-
-                previousCalendarData
+                previousBookmarks
             );
         },
-        onSettled: () => {
+        onSettled: (_, __, variables, ___) => {
+            const { userId, yearAndMonth } = variables;
+
+            // 실패했던, 성공했던 bookmark query를 refetch
             queryClient.invalidateQueries({
                 queryKey: [QUERY_KEY.bookmark_video, userId, yearAndMonth],
             });
@@ -150,4 +127,71 @@ const useBookmarkMutation = (
     return mutation;
 };
 
-export default useBookmarkMutation;
+export const useRemovingBookmark = () => {
+    const queryClient = useQueryClient();
+
+    const removingMutation = useMutation({
+        mutationKey: [MUTATION_KEY.removing_bookmark],
+        mutationFn: ({ userId, videoData }: MutationParams) => {
+            const videoId = videoData.videoId;
+
+            return removeBookmarkVideo(userId, videoId);
+        },
+        onMutate: async ({ userId, yearAndMonth, videoData }) => {
+            await queryClient.cancelQueries({
+                queryKey: [QUERY_KEY.bookmark_video, userId, yearAndMonth],
+            });
+
+            const previousBookmarks = queryClient.getQueryData<
+                Map<FullDate, VideoData>
+            >([QUERY_KEY.bookmark_video, userId, yearAndMonth]);
+
+            if (!previousBookmarks) {
+                return;
+            }
+
+            const fullDate = videoData.publishedAt as FullDate;
+
+            const newBookmarks = new Map(previousBookmarks.entries());
+
+            if (!newBookmarks.has(fullDate)) {
+                return;
+            }
+
+            newBookmarks.delete(fullDate);
+
+            queryClient.setQueryData(
+                [QUERY_KEY.bookmark_video, userId, yearAndMonth],
+                newBookmarks
+            );
+
+            return { previousBookmarks };
+        },
+
+        onError: (error, variables, context) => {
+            console.error(error);
+
+            if (!context) {
+                return;
+            }
+
+            const { userId, yearAndMonth } = variables;
+
+            const { previousBookmarks } = context;
+
+            queryClient.setQueryData(
+                [QUERY_KEY.bookmark_video, userId, yearAndMonth],
+                previousBookmarks
+            );
+        },
+        onSettled: (_, __, variables, ___) => {
+            const { userId, yearAndMonth } = variables;
+
+            queryClient.invalidateQueries({
+                queryKey: [QUERY_KEY.bookmark_video, userId, yearAndMonth],
+            });
+        },
+    });
+
+    return removingMutation;
+};
