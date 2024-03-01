@@ -1,6 +1,5 @@
-// TODO:
-const createFullDate = (yearAndMonth: YearAndMonth, day: number) => {
-    return yearAndMonth + "-" + String(day).padStart(2, "0");
+const createFullDate = (yearAndMonth: YearAndMonth, day: Day) => {
+    return (yearAndMonth + "-" + String(day).padStart(2, "0")) as FullDate;
 };
 
 export default createFullDate;
