@@ -4,7 +4,7 @@ import styled from "styled-components";
 import useCalendar from "@/hooks/useCalendar";
 import showBookmarkedOnlyAtom from "@/recoil/showBookmarkedOnlyAtom";
 import useBookmark from "@/hooks/bookmark/useBookmark";
-import { useFetchingAllVideo } from "@/hooks/useVideo";
+import { useFetchingVideo } from "@/hooks/useVideo";
 import createMonthPeriod from "@/utils/createMonthPeriod";
 import createFullDate from "@/utils/createFullDate";
 import ListCard from "./ListCard";
@@ -12,8 +12,10 @@ import EmptyPage from "../../EmptyPage";
 import { gray2 } from "@/styles/colors";
 
 const ListCardContainer = () => {
+    const showBookmarkedOnly = useRecoilValue(showBookmarkedOnlyAtom);
+
     const {
-        monthData,
+        monthDays,
         yearAndMonth: {
             prevYearAndMonth,
             currentYearAndMonth,
@@ -21,30 +23,26 @@ const ListCardContainer = () => {
         },
     } = useCalendar();
 
-    const showBookmarkedOnly = useRecoilValue(showBookmarkedOnlyAtom);
-
     const { data, isBookmarkVideo } = useBookmark();
 
-    const query = useFetchingAllVideo(
-        createMonthPeriod({
-            currentYearAndMonth,
-            prevYearAndMonth,
-            nextYearAndMonth,
-        })
-    );
+    const { currentMonthPeriod } = createMonthPeriod({
+        currentYearAndMonth,
+        prevYearAndMonth,
+        nextYearAndMonth,
+    });
 
-    const { currentMonthQuery } = query;
+    const query = useFetchingVideo(currentMonthPeriod);
 
     const isEmpty =
-        currentMonthQuery.data.size === 0 ||
+        query.data.size === 0 ||
         (showBookmarkedOnly === "show" && data && !(data.size > 0));
 
     return (
         <Wrapper>
-            {[...monthData[currentYearAndMonth]].reverse().map((value) => {
+            {[...monthDays[currentYearAndMonth]].reverse().map((value) => {
                 const fullDate = createFullDate(currentYearAndMonth, value);
 
-                let videoData = currentMonthQuery.data.get(fullDate);
+                let videoData = query.data.get(fullDate);
 
                 if (videoData === undefined) {
                     return null;

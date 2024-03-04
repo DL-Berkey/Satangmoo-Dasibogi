@@ -9,22 +9,24 @@ import CalendarCard from "./CalendarCard";
 import { gray2 } from "@/styles/colors";
 import { dateCardContainerMedia } from "@/styles/media";
 
-const getDataCardArray = (params: {
+const getCalendarCardArray = ({
+    yearAndMonth,
+    days,
+    monthlyVideo,
+}: {
     yearAndMonth: YearAndMonth;
-    dateArray: number[];
-    mappedVideoData: Map<string, VideoData>;
+    days: Day[];
+    monthlyVideo: MonthlyVideo;
 }) => {
-    const { yearAndMonth, dateArray, mappedVideoData } = params;
+    return days.map((day) => {
+        const fullDate = createFullDate(yearAndMonth, day);
 
-    return dateArray.map((value) => {
-        const fullDate = createFullDate(yearAndMonth, value);
-
-        let videoData = mappedVideoData.get(fullDate);
+        const videoData = monthlyVideo.get(fullDate);
 
         return (
             <CalendarCard
                 key={fullDate}
-                date={String(value)}
+                fullDate={String(day)}
                 videoData={videoData}
             />
         );
@@ -33,7 +35,7 @@ const getDataCardArray = (params: {
 
 const CalendarCardContainer = () => {
     const {
-        monthData,
+        monthDays,
         yearAndMonth: {
             prevYearAndMonth,
             currentYearAndMonth,
@@ -53,20 +55,20 @@ const CalendarCardContainer = () => {
 
     return (
         <Wrapper>
-            {getDataCardArray({
+            {getCalendarCardArray({
                 yearAndMonth: prevYearAndMonth,
-                dateArray: monthData[prevYearAndMonth],
-                mappedVideoData: prevMonthQuery.data,
+                days: monthDays[prevYearAndMonth],
+                monthlyVideo: prevMonthQuery.data,
             })}
-            {getDataCardArray({
+            {getCalendarCardArray({
                 yearAndMonth: currentYearAndMonth,
-                dateArray: monthData[currentYearAndMonth],
-                mappedVideoData: currentMonthQuery.data,
+                days: monthDays[currentYearAndMonth],
+                monthlyVideo: currentMonthQuery.data,
             })}
-            {getDataCardArray({
+            {getCalendarCardArray({
                 yearAndMonth: nextYearAndMonth,
-                dateArray: monthData[nextYearAndMonth],
-                mappedVideoData: nextMonthQuery.data,
+                days: monthDays[nextYearAndMonth],
+                monthlyVideo: nextMonthQuery.data,
             })}
         </Wrapper>
     );

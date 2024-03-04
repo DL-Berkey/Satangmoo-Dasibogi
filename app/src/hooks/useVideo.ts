@@ -3,25 +3,27 @@ import { useSuspenseQuery } from "@tanstack/react-query";
 import { QUERY_KEY } from "@/constants/queryKeys";
 import supabase from "@/supabaseConfig/client";
 
-const getVideoMap = async (startingDate: string, endDate: string) => {
+const getVideoMap = async (startingFull: FullDate, endFull: FullDate) => {
     const { data, error } = await supabase
         .from("video")
         .select()
-        .gte("publishedAt", startingDate)
-        .lte("publishedAt", endDate);
+        .gte("publishedAt", startingFull)
+        .lte("publishedAt", endFull);
 
     if (error) {
         throw error;
     }
 
-    const result = new Map<string, VideoData>();
+    const result: MonthlyVideo = new Map();
 
     data.forEach((value) => {
         const thumbnails: VideoData["thumbnails"] = JSON.parse(
             value.thumbnails
         );
 
-        result.set(value.publishedAt, {
+        const fullDate = value.publishedAt as FullDate;
+
+        result.set(fullDate, {
             ...value,
             thumbnails: thumbnails,
         });
@@ -30,11 +32,11 @@ const getVideoMap = async (startingDate: string, endDate: string) => {
     return result;
 };
 
-export const useFetchingVideo = (monthPeriod: Period) => {
+export const useFetchingVideo = (monthPeriod: MonthPeriod) => {
     const query = useSuspenseQuery({
         queryKey: [QUERY_KEY.video, monthPeriod.yearAndMonth],
         queryFn: () =>
-            getVideoMap(monthPeriod.startingDate, monthPeriod.endDate),
+            getVideoMap(monthPeriod.startingFullDate, monthPeriod.endFullDate),
     });
 
     if (query.error) {
@@ -43,14 +45,15 @@ export const useFetchingVideo = (monthPeriod: Period) => {
 
     return query;
 };
+
 export const useFetchingAllVideo = ({
     currentMonthPeriod,
     prevMonthPeriod,
     nextMonthPeriod,
 }: {
-    currentMonthPeriod: Period;
-    prevMonthPeriod: Period;
-    nextMonthPeriod: Period;
+    currentMonthPeriod: MonthPeriod;
+    prevMonthPeriod: MonthPeriod;
+    nextMonthPeriod: MonthPeriod;
 }) => {
     const currentMonthQuery = useFetchingVideo(currentMonthPeriod);
     const prevMonthQuery = useFetchingVideo(prevMonthPeriod);

@@ -1,6 +1,5 @@
 import { useState, useEffect, ChangeEvent } from "react";
 import { useRecoilState } from "recoil";
-import { Dayjs } from "dayjs";
 import styled, { css } from "styled-components";
 
 import { GrPrevious, GrNext } from "react-icons/gr";
@@ -22,25 +21,25 @@ const CalendarNavigation = () => {
     const { date, changeCurrentMonth, goPrevMonth, goNextMonth } =
         useCalendar();
 
-    const [isVisibleDatePicker, setIsDatePicker] = useState(false);
+    const [isVisibleDatePicker, setIsVisibleDatePicker] = useState(false);
 
     const [sortingMode, setSortingMode] = useRecoilState(sortingAtom);
 
     const { registerPopup } = usePopup();
 
     // date가 변경 되었을 때 date picker가 켜져 있다면 꺼줌
-    // useEffect(() => {
-    //     if (isVisibleDatePicker) {
-    //         setIsDatePicker(false);
-    //     }
-    // }, [date]);
+    useEffect(() => {
+        if (isVisibleDatePicker) {
+            setIsVisibleDatePicker(false);
+        }
+    }, [date]);
 
     const onClickSortingButton = () => {
         setSortingMode((prev) => (prev === "calendar" ? "list" : "calendar"));
     };
 
     const onClickYearAndMonth = () => {
-        setIsDatePicker((prev) => !prev);
+        setIsVisibleDatePicker((prev) => !prev);
     };
 
     const onChangeDatePicker = (e: ChangeEvent<HTMLInputElement>) => {
@@ -51,7 +50,7 @@ const CalendarNavigation = () => {
         }
 
         changeCurrentMonth(date);
-        setIsDatePicker((prev) => !prev);
+        setIsVisibleDatePicker((prev) => !prev);
     };
 
     return (

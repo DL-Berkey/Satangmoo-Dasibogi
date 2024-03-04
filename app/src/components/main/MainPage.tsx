@@ -1,10 +1,8 @@
-import { useState, Suspense } from "react";
-import dayjs from "dayjs";
+import { Suspense } from "react";
 import { useRecoilValue } from "recoil";
 import styled from "styled-components";
 
 import sortingAtom from "@/recoil/sortingAtom";
-import createMonthData from "@/utils/createMonthData";
 import CalendarNavigation from "./CalendarNavigation";
 import ErrorBoundary from "../error/ErrorBoundary";
 import Loading from "../Loading";

@@ -23,9 +23,9 @@ const BookmarkButton = ({ videoData, className }: Props) => {
     const onClick = (e: MouseEvent<HTMLButtonElement>) => {
         e.stopPropagation();
 
-        const videoId = e.currentTarget.getAttribute("videoid");
+        const videoId = videoData.videoId;
 
-        if (bookmark && videoId) {
+        if (bookmark.data && videoId) {
             bookmark.updateBookmark(videoData);
         }
     };
@@ -35,8 +35,7 @@ const BookmarkButton = ({ videoData, className }: Props) => {
             {isLogin() && isCurrentMonth(videoData.publishedAt as FullDate) && (
                 <Wrapper
                     className={className}
-                    $isBookmarked={bookmark.isBookmarkVideo(videoData)}
-                    videoid={videoData.videoId}
+                    $isBookmark={bookmark.isBookmarkVideo(videoData)}
                     onClick={onClick}
                 >
                     <FaBookmark />
@@ -46,7 +45,7 @@ const BookmarkButton = ({ videoData, className }: Props) => {
     );
 };
 
-const Wrapper = styled.button<{ videoid: string; $isBookmarked?: boolean }>`
+const Wrapper = styled.button<{ $isBookmark?: boolean }>`
     width: 30%;
     height: 100%;
 
@@ -58,7 +57,7 @@ const Wrapper = styled.button<{ videoid: string; $isBookmarked?: boolean }>`
         fill: white;
 
         ${(props) =>
-            props.$isBookmarked &&
+            props.$isBookmark &&
             css`
                 fill: ${mainRed};
             `}

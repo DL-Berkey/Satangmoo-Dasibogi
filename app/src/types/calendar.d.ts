@@ -8,15 +8,14 @@ type DAY_OF_WEEK =
     | "thursday"
     | "friday";
 
-// TODO: 더 적절한 이름으로 변경할 것
-interface MonthData {
-    [key: string]: number[];
+interface MonthDays {
+    [key: YearAndMonth]: Day[];
 }
 
-interface Period {
-    yearAndMonth: string;
-    startingDate: string;
-    endDate: string;
+interface MonthPeriod {
+    yearAndMonth: YearAndMonth;
+    startingFullDate: FullDate;
+    endFullDate: FullDate;
 }
 
 interface Thumbnail {
@@ -58,7 +57,6 @@ type Month =
 
 type YearAndMonth = `${Year}-${Month}`;
 
-// TODO: "day, date" name refactoring
 type Day =
     | 1
     | 2
@@ -91,7 +89,48 @@ type Day =
     | 29
     | 30
     | 31;
-//TODO:
-type FullDate = `${Year}-${Month}-${day}`;
 
-type CalendarData = Record<FullDate, VideoData>;
+type PaddedDay =
+    | "01"
+    | "02"
+    | "03"
+    | "04"
+    | "05"
+    | "06"
+    | "07"
+    | "08"
+    | "09"
+    | "10"
+    | "11"
+    | "12"
+    | "13"
+    | "14"
+    | "15"
+    | "16"
+    | "17"
+    | "18"
+    | "19"
+    | "20"
+    | "21"
+    | "22"
+    | "23"
+    | "24"
+    | "25"
+    | "26"
+    | "27"
+    | "28"
+    | "29"
+    | "30"
+    | "31";
+
+type FullDate = `${Year}-${Month}-${PaddedDay}`;
+
+type MonthlyVideo = Map<FullDate, VideoData>;
+
+//
+// type LessThan<N extends number, A extends any[] = []> = N extends A['length'] ? A[number] : LessThan<N, [...A, A["length"]]>
+
+// type NumericRange<F extends number, T extends number> = Exclude<T | LessThan<T>, LessThan<F>>
+
+// type Days = NumericRange<1, 31>
+//

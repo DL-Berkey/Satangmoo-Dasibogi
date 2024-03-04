@@ -59,6 +59,8 @@ const useBookmark = () => {
         }
     };
 
+    // TODO: monthlyBookmarkVideod와 AllBookmarkVideo 구분해서 만들기
+
     return {
         query,
         data: query.data,

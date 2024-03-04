@@ -5,5 +5,6 @@ export const QUERY_KEY = {
 } as const;
 
 export const MUTATION_KEY = {
-    on_bookmarking: "on_bookmarking",
+    adding_bookmark: "adding_bookmark",
+    removing_bookmark: "removing_bookmark",
 } as const;

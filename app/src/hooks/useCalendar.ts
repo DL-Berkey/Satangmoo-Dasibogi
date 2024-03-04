@@ -2,9 +2,8 @@ import { useRecoilState } from "recoil";
 import dayjs from "dayjs";
 
 import dateAtom from "@/recoil/dateAtom";
-import createMonthData from "@/utils/createMonthData";
+import createMonthDays from "@/utils/createMonthDays";
 
-// TODO: refactor variable name
 const useCalendar = () => {
     const [date, setDate] = useRecoilState(dateAtom);
 
@@ -29,7 +28,7 @@ const useCalendar = () => {
         .add(1, "month")
         .format("YYYY-MM") as YearAndMonth;
 
-    const monthData = createMonthData(
+    const monthDays = createMonthDays(
         startingDayOfWeek,
         endDate,
         endDateOfLastMonth,
@@ -62,7 +61,7 @@ const useCalendar = () => {
 
     return {
         date,
-        monthData,
+        monthDays,
         changeCurrentMonth,
         goPrevMonth,
         goNextMonth,

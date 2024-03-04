@@ -1,4 +1,3 @@
-import { MouseEvent } from "react";
 import dayjs from "dayjs";
 import styled from "styled-components";
 
@@ -11,16 +10,16 @@ interface Props {
 }
 
 const ListCard = ({ videoData }: Props) => {
-    const onClick = (e: MouseEvent<HTMLDivElement>) => {
-        const videoid = e.currentTarget.getAttribute("videoid");
+    const onClick = () => {
+        const videoId = videoData.videoId;
 
-        if (videoid) {
-            window.open(`https://www.youtube.com/watch?v=${videoid}`, "_blank");
+        if (videoId) {
+            window.open(`https://www.youtube.com/watch?v=${videoId}`, "_blank");
         }
     };
 
     return (
-        <Wrapper videoid={videoData.videoId} onClick={onClick}>
+        <Wrapper onClick={onClick}>
             <Thumbnail $thumbnail={videoData.thumbnails.high.url} />
             <Detail>
                 <p>{dayjs(videoData.publishedAt).format("YYYY년 M월 D일")}</p>
@@ -31,9 +30,7 @@ const ListCard = ({ videoData }: Props) => {
     );
 };
 
-const Wrapper = styled.div<{
-    videoid: string | undefined;
-}>`
+const Wrapper = styled.div`
     position: relative;
 
     display: flex;

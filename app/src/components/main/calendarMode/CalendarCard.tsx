@@ -1,4 +1,3 @@
-import { MouseEvent } from "react";
 import styled, { css } from "styled-components";
 
 import usePopup from "@/hooks/usePopup";
@@ -7,29 +6,25 @@ import { mainRed } from "@/styles/colors";
 import { cardInfoMedia, dateCardMedia } from "@/styles/media";
 
 interface Props {
-    date: string;
+    fullDate: string;
     videoData?: VideoData;
 }
 
-const CalendarCard = ({ date, videoData }: Props) => {
+const CalendarCard = ({ fullDate, videoData }: Props) => {
     const { registerPopup } = usePopup();
 
-    const onClick = (e: MouseEvent<HTMLDivElement>) => {
-        const videoid = e.currentTarget.getAttribute("videoid");
+    const onClick = () => {
+        const videoId = videoData?.videoId;
 
-        if (videoid) {
-            window.open(`https://www.youtube.com/watch?v=${videoid}`, "_blank");
+        if (videoId) {
+            window.open(`https://www.youtube.com/watch?v=${videoId}`, "_blank");
         }
     };
 
     return (
-        <Wrapper
-            videoid={videoData?.videoId}
-            onClick={onClick}
-            {...registerPopup(videoData?.title)}
-        >
+        <Wrapper onClick={onClick} {...registerPopup(videoData?.title)}>
             <CardInfo $setTransparent={videoData?.thumbnails !== undefined}>
-                <Date>{date + " 일"}</Date>
+                <Date>{fullDate + " 일"}</Date>
                 {videoData && <BookmarkButton videoData={videoData} />}
             </CardInfo>
 
@@ -38,9 +33,7 @@ const CalendarCard = ({ date, videoData }: Props) => {
     );
 };
 
-const Wrapper = styled.div<{
-    videoid: string | undefined;
-}>`
+const Wrapper = styled.div`
     position: relative;
 
     display: flex;
