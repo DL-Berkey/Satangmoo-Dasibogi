@@ -2,7 +2,6 @@ import { useRecoilValue } from "recoil";
 import styled from "styled-components";
 
 import popupAtom from "@/recoil/popupAtom";
-import { defaultSize } from "@/styles/fontSize";
 
 const Popup = () => {
     const { isVisible, x, y, text } = useRecoilValue(popupAtom);
@@ -30,7 +29,7 @@ const Wrapper = styled.div.attrs<{ x: number; y: number }>((props) => ({
 
     padding: 1%;
 
-    font-size: ${defaultSize};
+    font-size: ${({ theme }) => theme.fontSize.small};
     color: white;
 
     background: rgba(0, 0, 0, 0.5);

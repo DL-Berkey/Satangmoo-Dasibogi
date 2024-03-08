@@ -2,8 +2,6 @@ import dayjs from "dayjs";
 import styled from "styled-components";
 
 import BookmarkButton from "../BookmarkButton";
-import { mainRed } from "@/styles/colors";
-import { defaultSize, mediumSize } from "@/styles/fontSize";
 
 interface Props {
     videoData: VideoData;
@@ -93,12 +91,12 @@ const Detail = styled.div`
 
         margin-bottom: 4%;
 
-        font-size: ${mediumSize};
+        font-size: ${({ theme }) => theme.fontSize.medium};
 
-        border-bottom: 2px solid ${mainRed};
+        border-bottom: 2px solid ${({ theme }) => theme.color.mainRed};
     }
     & :last-child {
-        font-size: ${defaultSize};
+        font-size: ${({ theme }) => theme.fontSize.small};
     }
 `;
 

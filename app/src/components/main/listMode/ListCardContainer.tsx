@@ -9,7 +9,6 @@ import createMonthPeriod from "@/utils/createMonthPeriod";
 import createFullDate from "@/utils/createFullDate";
 import ListCard from "./ListCard";
 import EmptyPage from "../../EmptyPage";
-import { gray2 } from "@/styles/colors";
 
 const ListCardContainer = () => {
     const showBookmarkedOnly = useRecoilValue(showBookmarkedOnlyAtom);
@@ -72,7 +71,7 @@ const Wrapper = styled.div`
     margin: 0 auto;
     padding: 2% 0;
 
-    background-color: ${gray2};
+    background-color: ${({ theme }) => theme.color.gray2};
 `;
 
 export default ListCardContainer;

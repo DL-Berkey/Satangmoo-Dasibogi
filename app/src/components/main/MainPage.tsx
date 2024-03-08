@@ -11,7 +11,6 @@ import CalendarCardContainer from "./calendarMode/CalendarCardContainer";
 import ListCardContainer from "./listMode/ListCardContainer";
 import GoUpButton from "../GoUpButton";
 import Popup from "../Popup";
-import { gray2 } from "@/styles/colors";
 
 const DAY_OF_WEEK_MAP: Record<DAY_OF_WEEK, string> = {
     sunday: "일요일",
@@ -46,7 +45,7 @@ const MainPage = () => {
 };
 
 const Wrapper = styled.section`
-    border-bottom: 3px solid ${gray2};
+    border-bottom: 3px solid ${({ theme }) => theme.color.gray2};
 `;
 
 export default MainPage;

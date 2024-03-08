@@ -4,7 +4,6 @@ import styled from "styled-components";
 import { FaArrowUp } from "react-icons/fa";
 
 import sortingAtom from "@/recoil/sortingAtom";
-import { mainRed } from "@/styles/colors";
 import { goUpButtonMedia } from "@/styles/media";
 
 const GoUpButton = () => {
@@ -37,7 +36,7 @@ const Wrapper = styled.button`
 
     aspect-ratio: 1;
 
-    background: ${mainRed};
+    background: ${({ theme }) => theme.color.mainRed};
     border-radius: 25%;
 
     box-shadow: 0px 10px 15px -3px rgba(0, 0, 0, 0.1);

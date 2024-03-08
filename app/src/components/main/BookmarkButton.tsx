@@ -6,7 +6,6 @@ import { FaBookmark } from "react-icons/fa";
 import useAccount from "@/hooks/useAccount";
 import useBookmark from "@/hooks/bookmark/useBookmark";
 import useCalendar from "@/hooks/useCalendar";
-import { mainRed } from "@/styles/colors";
 
 interface Props {
     videoData: VideoData;
@@ -59,7 +58,7 @@ const Wrapper = styled.button<{ $isBookmark?: boolean }>`
         ${(props) =>
             props.$isBookmark &&
             css`
-                fill: ${mainRed};
+                fill: ${({ theme }) => theme.color.mainRed};
             `}
     }
 `;

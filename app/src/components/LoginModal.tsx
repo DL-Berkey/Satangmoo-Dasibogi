@@ -8,8 +8,6 @@ import { FaGoogle } from "react-icons/fa";
 import loginModalAtom from "@/recoil/loginModalAtom";
 import useAccount from "@/hooks/useAccount";
 import heart from "@/assets/hearttangmoo.png";
-import { bigSize, mediumSize } from "@/styles/fontSize";
-import { mainRed } from "@/styles/colors";
 
 const LoginModal = () => {
     const [loginModal, setLoginModal] = useRecoilState(loginModalAtom);
@@ -105,7 +103,7 @@ const Title = styled.div`
     }
 
     & span {
-        font-size: ${bigSize};
+        font-size: ${({ theme }) => theme.fontSize.big};
     }
 `;
 
@@ -125,7 +123,7 @@ const GoogleLoginButton = styled.button`
     width: 10vw;
     height: 6vh;
 
-    background: ${mainRed};
+    background: ${({ theme }) => theme.color.mainRed};
     border-radius: 4%;
 
     & svg {
@@ -135,7 +133,7 @@ const GoogleLoginButton = styled.button`
     }
 
     & span {
-        font-size: ${mediumSize};
+        font-size: ${({ theme }) => theme.fontSize.medium};
         color: white;
     }
 `;

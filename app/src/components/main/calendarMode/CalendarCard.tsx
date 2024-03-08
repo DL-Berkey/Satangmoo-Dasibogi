@@ -2,7 +2,6 @@ import styled, { css } from "styled-components";
 
 import usePopup from "@/hooks/usePopup";
 import BookmarkButton from "../BookmarkButton";
-import { mainRed } from "@/styles/colors";
 import { cardInfoMedia, dateCardMedia } from "@/styles/media";
 
 interface Props {
@@ -71,7 +70,7 @@ const CardInfo = styled.div<{ $setTransparent: boolean }>`
 const Date = styled.span`
     width: fit-content;
 
-    border-bottom: 2px solid ${mainRed};
+    border-bottom: 2px solid ${({ theme }) => theme.color.mainRed};
 `;
 
 const Thumbnail = styled.div.attrs<{

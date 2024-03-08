@@ -6,7 +6,6 @@ import createFullDate from "@/utils/createFullDate";
 import useCalendar from "@/hooks/useCalendar";
 import createMonthPeriod from "@/utils/createMonthPeriod";
 import CalendarCard from "./CalendarCard";
-import { gray2 } from "@/styles/colors";
 import { dateCardContainerMedia } from "@/styles/media";
 
 const getCalendarCardArray = ({
@@ -82,7 +81,7 @@ const Wrapper = styled.div`
 
     height: 80vh;
 
-    background-color: ${gray2};
+    background-color: ${({ theme }) => theme.color.gray2};
 
     ${dateCardContainerMedia}
 `;

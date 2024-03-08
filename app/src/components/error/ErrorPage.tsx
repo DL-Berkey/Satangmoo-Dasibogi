@@ -2,8 +2,6 @@ import { useQueryErrorResetBoundary } from "@tanstack/react-query";
 import styled from "styled-components";
 
 import errorImage from "@/assets/sadtangmoo.png";
-import { mainRed } from "@/styles/colors";
-import { bigSize, mediumSize } from "@/styles/fontSize";
 
 interface Props {
     resetErrorBoundary(): void;
@@ -46,7 +44,7 @@ const ErrorImage = styled.img`
 const ErrorMessage = styled.p`
     margin: 0 auto;
 
-    font-size: ${bigSize};
+    font-size: ${({ theme }) => theme.fontSize.big};
 
     margin-bottom: 6%;
 `;
@@ -57,10 +55,10 @@ const ResetButton = styled.button`
     margin: 0 auto;
     padding: 1%;
 
-    font-size: ${mediumSize};
+    font-size: ${({ theme }) => theme.fontSize.medium};
     color: white;
 
-    background: ${mainRed};
+    background: ${({ theme }) => theme.color.mainRed};
     border-radius: 10px;
 `;
 

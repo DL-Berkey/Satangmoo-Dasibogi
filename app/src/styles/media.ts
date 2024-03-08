@@ -1,7 +1,6 @@
 import { css } from "styled-components";
 
-import { bigSize, mediumSize } from "./fontSize";
-import { mainRed } from "./colors";
+import { theme } from "./theme";
 
 type MediaSizeType = "small" | "medium" | "large";
 
@@ -44,7 +43,7 @@ export const datePickerMedia = css`
     @media ${media.medium} {
         width: 80%;
 
-        font-size: ${mediumSize};
+        font-size: ${theme.fontSize.medium};
     }
 
     @media (${media.small}) and (${media.medium}) {
@@ -94,9 +93,9 @@ export const dateCardMedia = css`
 
         margin: 0 auto;
 
-        font-size: ${bigSize};
+        font-size: ${theme.fontSize.big};
 
-        border: 3px solid ${mainRed};
+        border: 3px solid ${theme.color.mainRed};
         border-radius: 10px;
 
         overflow: hidden;
@@ -119,7 +118,7 @@ export const dateCardMedia = css`
 
 export const cardInfoMedia = css`
     @media ${media.medium} {
-        font-size: ${bigSize};
+        font-size: ${theme.fontSize.big};
 
         & button svg {
             transform: scale(2);

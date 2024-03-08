@@ -4,8 +4,6 @@ import styled from "styled-components";
 import { FaGithub } from "react-icons/fa";
 
 import Header from "./Header";
-import { mainRed } from "@/styles/colors";
-import { mediumSize, smallSize } from "@/styles/fontSize";
 import { footerMedia } from "@/styles/media";
 
 const Layout = () => {
@@ -50,9 +48,9 @@ const Footer = styled.footer`
 
         margin: 0 auto;
 
-        color: ${mainRed};
+        color: ${({ theme }) => theme.color.mainRed};
 
-        font-size: ${mediumSize};
+        font-size: ${({ theme }) => theme.fontSize.medium};
     }
 
     & div {
@@ -68,7 +66,7 @@ const Footer = styled.footer`
 
         transform: translateY(-50%);
 
-        font-size: ${smallSize};
+        font-size: ${({ theme }) => theme.fontSize.normal};
     }
 
     & div span a {

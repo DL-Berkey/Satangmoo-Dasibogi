@@ -6,8 +6,6 @@ import { FaBookmark } from "react-icons/fa";
 import sortingAtom from "@/recoil/sortingAtom";
 import useAccount from "@/hooks/useAccount";
 import showBookmarkedOnlyAtom from "@/recoil/showBookmarkedOnlyAtom";
-import { defaultSize } from "@/styles/fontSize";
-import { mainRed } from "@/styles/colors";
 
 const ShowBookmarkedOnlyVideo = () => {
     const sortingMode = useRecoilValue(sortingAtom);
@@ -67,7 +65,7 @@ const Button = styled.button<{ $isShow: boolean }>`
 
     padding: 0 3%;
 
-    font-size: ${defaultSize};
+    font-size: ${({ theme }) => theme.fontSize.small};
 
     & svg {
         fill: white;
@@ -81,12 +79,12 @@ const Button = styled.button<{ $isShow: boolean }>`
         ${(props) =>
             props.$isShow &&
             css`
-                fill: ${mainRed};
+                fill: ${({ theme }) => theme.color.mainRed};
             `}
     }
 
     & div :first-child {
-        color: ${mainRed};
+        color: ${({ theme }) => theme.color.mainRed};
     }
 `;
 

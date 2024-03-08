@@ -9,8 +9,6 @@ import useCalendar from "@/hooks/useCalendar";
 import sortingAtom from "@/recoil/sortingAtom";
 import usePopup from "@/hooks/usePopup";
 import ShowBookmarkedOnlyVideo from "./ShowBookmarkedOnlyVideo";
-import { bigSize, defaultSize } from "@/styles/fontSize";
-import { gray, mainRed } from "@/styles/colors";
 import {
     NavigateMonthMedia,
     datePickerMedia,
@@ -111,7 +109,7 @@ const Wrapper = styled.nav`
     h2 {
         width: fit-content;
 
-        font-size: ${bigSize};
+        font-size: ${({ theme }) => theme.fontSize.big};
     }
 
     & h2:hover {
@@ -143,7 +141,7 @@ const SortingMenu = styled.div`
         width: 3px;
         height: 30%;
 
-        background: ${gray};
+        background: ${({ theme }) => theme.color.gray};
 
         transform: translate(-50%, -50%);
     }
@@ -162,7 +160,7 @@ const SortingButton = styled.button<{ $active: boolean }>`
 
     padding: 0 3%;
 
-    font-size: ${defaultSize};
+    font-size: ${({ theme }) => theme.fontSize.small};
 
     animation: border-bottom;
 
@@ -176,13 +174,13 @@ const SortingButton = styled.button<{ $active: boolean }>`
         width: 0;
         height: 2px;
 
-        background: ${mainRed};
+        background: ${({ theme }) => theme.color.mainRed};
 
         transition: width 0.2s, left 0.2s;
     }
 
     & svg {
-        fill: ${mainRed};
+        fill: ${({ theme }) => theme.color.mainRed};
     }
 
     ${(props) =>
@@ -206,7 +204,7 @@ const NavigateMonthButton = styled.button`
 
     &:hover {
         & svg {
-            color: ${mainRed};
+            color: ${({ theme }) => theme.color.mainRed};
         }
     }
 
@@ -225,9 +223,9 @@ const DatePicker = styled.input`
 
     padding: 1%;
 
-    font-size: ${defaultSize};
+    font-size: ${({ theme }) => theme.fontSize.small};
 
-    border: 2px solid ${mainRed};
+    border: 2px solid ${({ theme }) => theme.color.mainRed};
     border-radius: 10px;
 
     z-index: 1;

@@ -1,7 +1,6 @@
 import styled from "styled-components";
 
 import image from "@/assets/sadtangmoo.png";
-import { bigSize } from "@/styles/fontSize";
 import { emptyPageMedia } from "@/styles/media";
 
 const EmptyPage = () => {
@@ -17,7 +16,7 @@ const Wrapper = styled.div`
     display: grid;
     place-content: center;
 
-    height: 83vh;
+    min-height: 83vh;
 
     ${emptyPageMedia}
 `;
@@ -33,7 +32,7 @@ const Image = styled.img`
 const Message = styled.p`
     margin: 0 auto;
 
-    font-size: ${bigSize};
+    font-size: ${({ theme }) => theme.fontSize.big};
 
     margin-bottom: 10%;
 `;

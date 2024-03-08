@@ -2,7 +2,6 @@ import { useRecoilValue } from "recoil";
 import styled, { css } from "styled-components";
 
 import sortingAtom from "@/recoil/sortingAtom";
-import { mainRed } from "@/styles/colors";
 import { dayOfWeekCardContainerMedia } from "@/styles/media";
 
 interface Props {
@@ -57,7 +56,7 @@ const DayOfWeekCard = styled.div<{
     ${(props) =>
         props.$isholiday &&
         css`
-            color: ${mainRed};
+            color: ${({ theme }) => theme.color.mainRed};
         `}
 `;
 
